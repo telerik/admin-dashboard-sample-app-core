@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+
+    @* Add the Kendo UI styles: *@
+    <link href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.default-v2.min.css" rel="stylesheet" type="text/css" />
+
+    @* Add the Kendo UI scripts: *@
+    <script src="https://kendo.cdn.telerik.com/2021.2.616/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.aspnetmvc.min.js"></script>
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <div class="sign-in-layout k-d-flex-col">
+            <div class="signin-container k-d-flex-col k-align-items-center k-justify-content-center">
+                @RenderBody()
+            </div>
+            <div class="background k-d-flex-col k-align-items-baseline k-justify-content-end">
+                <img src="../../../../../assets/signin/kendoka.svg" />
+            </div>
+            <div class="waves"></div>
+        </div>
+    </main>
+    <footer></footer>
+
+    <style>
+        .sign-in-layout {
+            width: 1440px;
+            height: 900px;
+            background: #212772;
+            background: -webkit-linear-gradient(top, #212772, #000000);
+            background: -moz-linear-gradient(top, #212772, #000000);
+            background: linear-gradient(to bottom, #212772, #000000);
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .signin-container {
+            position: absolute;
+            width: 560px;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            background: #FFFFFF;
+            z-index: 2
+        }
+
+        .background {
+            position: relative;
+            width: 546px;
+            height: 720px;
+            left: calc(50% - 546px/2 + 276px);
+            top: 0px
+        }
+
+            .background > img {
+                z-index: 2;
+            }
+
+        .waves {
+            position: absolute;
+            left: 0.5%;
+            right: 0%;
+            top: 52.6%;
+            bottom: 0%;
+            width: 1440px;
+            height: 392px;
+            background: url("../../../../../assets/signin/bgr-image.svg");
+        }
+    </style>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

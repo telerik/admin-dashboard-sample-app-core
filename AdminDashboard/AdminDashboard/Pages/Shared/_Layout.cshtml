@@ -17,39 +17,70 @@
     <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.aspnetmvc.min.js"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">AdminDashboard</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+    <kendo-drawer name="drawer" mode="push" width="240" position="left" template-id="drawerTemplate">
+        <mini enabled="false" />
+        <content>
+            <div>
+                <main role="main">
+                    <kendo-appbar name="appbar" theme-color="AppBarThemeColor.Inherit">
+                        <items>
+                            <appbar-item type="AppBarItemType.ContentItem" template="<span id='menuIcon' href='\\#'><span class='k-icon k-i-menu'></span></span>"></appbar-item>
+                            <appbar-item type="AppBarItemType.Spacer" width="16px"></appbar-item>
+                            <appbar-item type="AppBarItemType.ContentItem" template="<h3 class='title'>@ViewData["Title"]</h3>"></appbar-item>
+                            <appbar-item type="AppBarItemType.Spacer"></appbar-item>
+                            <appbar-item type="AppBarItemType.ContentItem" template="<a style='color:black;' href='\\#'><span class='k-icon k-i-notification'><span data-role='badge' class='k-badge k-badge-solid k-badge-error k-badge-md k-badge-dot k-badge-outside k-top-end'></span></span></a>"></appbar-item>
+                            <appbar-item type="AppBarItemType.Spacer" width="8px"></appbar-item>
+                            <appbar-item type="AppBarItemType.ContentItem" template="<a href='\\#'>About<a/>"></appbar-item>
+                            @{ if ((string)ViewData["Title"] != "Dashboard")
+                                {
+                                    <appbar-item type="AppBarItemType.ContentItem" template="<a href='\\#'>Contacts<a/>"></appbar-item>
+                                } 
+                            }
+                        </items>
+                    </kendo-appbar>
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </content>
+    </kendo-drawer>
+    <script id="drawerTemplate" type="text/html">
+        <div class="k-d-flex-col k-align-items-center k-justify-content-evenly" style="height:218px;">
+            <div class="k-avatar k-avatar-circle k-avatar-image k-avatar-lg" id="avatar"><img src='../assets/navigation/Avatar.svg' /></div>
+            <div id="name">FullName</div>
+            <div id="email">email@email.com</div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - AdminDashboard - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="k-button k-secondary k-state-active">Logout</button>
+            </form>
         </div>
-    </footer>
+        <ul>
+            <li><a data-role='drawer-item' asp-page="Index"><span class="k-icon k-i-grid"></span>Dashboard</a></li>
+            <li><a data-role='drawer-item' asp-page="Performance"><span class="k-icon k-i-globe"></span>Performance and Sales</a></li>
+            <li><a data-role='drawer-item' asp-page="Products"><span class="k-icon k-i-aggregate-fields"></span>Products</a></li>
+            <li data-role='drawer-separator'></li>
+            <li><a data-role='drawer-item' asp-page="Settings"><span class="k-icon k-i-gear"></span>Settings</a></li>
+        </ul>
+    </script>
+
+    <style>
+        #name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        #email {
+            font-size: 12px;
+            text-decoration-line: underline;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $("#menuIcon").click(function () {
+                $("#drawer").getKendoDrawer().show();
+            })
+        })
+    </script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

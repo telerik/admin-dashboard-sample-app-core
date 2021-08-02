@@ -6,7 +6,7 @@
     Layout = "Shared/_SignInLayout.cshtml";
 }
 <div class="form-container k-d-flex-col k-align-items-center k-justify-content-center">
-    <div>
+    <div class="logo-container k-d-flex-col k-align-items-center k-justify-content-center">
         <img src="../../../../../assets/signin/signin.svg" />
         <div class="signin k-justify-content-center">Sign In</div>
         <div class="register k-d-flex-row k-justify-content-evenly"><span>Don't have an account?</span> <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Sign Up</a></div>
@@ -35,7 +35,7 @@
             )
     <div style="padding:10px;" class="k-d-flex-row k-align-items-center k-justify-content-center">
         <span style="flex: none; order: 0; flex-grow: 1; margin: 0px 9px;"></span>
-        <span style="border: none; width: 102px;">Or continue with</span>
+        <span style="border: none; width: 102px; font-size:14px">Or continue with</span>
         <span style="flex: none; order: 2; flex-grow: 1; margin: 0px 9px;"></span>
     </div>
     <div class="button-container k-d-flex-row k-justify-content-evenly">
@@ -56,7 +56,9 @@
             left: calc(50% - 75px/2 + 97.5px);
             border: 1px solid #8F8F8F;
         }
-
+    .logo-container{
+        gap:20px;
+    }
     .signin {
         display: flex;
         font-weight: 300;

@@ -3,6 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <title></title>
 
     @* Add the Kendo UI styles: *@
@@ -14,67 +18,72 @@
     <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.aspnetmvc.min.js"></script>
 </head>
 <body>
-    <header>
-    </header>
-    <main>
-        <div class="sign-in-layout k-d-flex-col">
+    <main class="k-d-flex-row k-align-items-center k-justify-content-center">
+        <div class="sign-in-layout k-d-flex ">
+            <div class="waves"></div>
             <div class="signin-container k-d-flex-col k-align-items-center k-justify-content-center">
                 @RenderBody()
             </div>
-            <div class="background k-d-flex-col k-align-items-baseline k-justify-content-end">
-                <img src="../../../../../assets/signin/kendoka.svg" />
+            <div style="width:100%" class="k-d-flex-col k-align-items-center k-justify-content-end">
+                <div class="slogan-container k-d-flex-col k-align-items-center k-justify-content-center">
+                    <div class="title">How Does Kendo UI Cut Development Time?</div>
+                    <div class="subtitle">Kendo UI delivers everything you need to build modern, beautiful, responsive apps.</div>
+                    <div class="kendoka"></div>
+                </div>
             </div>
-            <div class="waves"></div>
         </div>
     </main>
-    <footer></footer>
 
     <style>
+        .slogan-container {
+            width: 540px;
+            height: 100%;
+            position: absolute;
+            gap: 30px;
+        }
+
         .sign-in-layout {
             width: 1440px;
             height: 900px;
-            background: #212772;
-            background: -webkit-linear-gradient(top, #212772, #000000);
-            background: -moz-linear-gradient(top, #212772, #000000);
-            background: linear-gradient(to bottom, #212772, #000000);
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 14px;
-            line-height: 20px;
+            background: url("../../../../../assets/signin/background.svg");
+            background-repeat: no-repeat;
+        }
+
+        .kendoka {
+            background: url("../../../../../assets/signin/kendoka.svg");
+            width: 303px;
+            height: 317px;
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 48px;
+            line-height: 67px;
+            color: #FFFFFF;
+            text-align: center
+        }
+
+        .subtitle {
+            font-weight: 400;
+            font-size: 19px;
+            color: #FFFFFF;
+            line-height: 25px;
+            text-align: center;
         }
 
         .signin-container {
-            position: absolute;
+            background: white;
             width: 560px;
-            left: 0px;
-            top: 0px;
-            bottom: 0px;
-            background: #FFFFFF;
-            z-index: 2
+            z-index: 1;
         }
-
-        .background {
-            position: relative;
-            width: 546px;
-            height: 720px;
-            left: calc(50% - 546px/2 + 276px);
-            top: 0px
-        }
-
-            .background > img {
-                z-index: 2;
-            }
 
         .waves {
-            position: absolute;
-            left: 0.5%;
-            right: 0%;
-            top: 52.6%;
-            bottom: 0%;
-            width: 1440px;
-            height: 392px;
             background: url("../../../../../assets/signin/bgr-image.svg");
+            width: 100%;
+            height: 390px;
+            align-self: flex-end;
+            position: absolute;
+            background-repeat: no-repeat
         }
     </style>
 

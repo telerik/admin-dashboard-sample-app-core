@@ -20,7 +20,7 @@
     <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.aspnetmvc.min.js"></script>
 </head>
 <body>
-    <kendo-drawer name="drawer" mode="push" width="240" position="left" template-id="drawerTemplate">
+    <kendo-drawer name="drawer" mode="push" width="240" position="left" template-id="drawerTemplate" navigatable="true">
         <mini enabled="false" />
         <content>
             <div>
@@ -37,7 +37,7 @@
                             @{ if ((string)ViewData["Title"] != "Dashboard")
                                 {
                                     <appbar-item type="AppBarItemType.ContentItem" template="<a href='\\#'>Contacts<a/>"></appbar-item>
-                                } 
+                                }
                             }
                         </items>
                     </kendo-appbar>
@@ -57,7 +57,7 @@
             </form>
         </div>
         <ul>
-            <li><a data-role='drawer-item' asp-page="Index"><span class="k-icon k-i-grid"></span>Dashboard</a></li>
+            <li><a data-role='drawer-item' asp-page="Index"><span class="k-icon k-i-grid "></span>Dashboard</a></li>
             <li><a data-role='drawer-item' asp-page="Performance"><span class="k-icon k-i-globe"></span>Performance and Sales</a></li>
             <li><a data-role='drawer-item' asp-page="Products"><span class="k-icon k-i-aggregate-fields"></span>Products</a></li>
             <li data-role='drawer-separator'></li>

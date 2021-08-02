@@ -1,10 +1,221 @@
 ﻿@page
 @model IndexModel
+@using AdminDashboard.Data.Models
+@inject UserManager<ApplicationUser> userManager
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="k-d-flex-col k-justify-content-center">
+    <h3>
+        Hello Again, FullName!
+    </h3>
+
+
+    <script id="tasks-ontrack-template" type="text/html">
+        <div style="font-size: 84px; line-height: 101px; color: \\#37B400">22</div>
+        <div class="k-card-title">In Backlog: 43</div>
+    </script>
+    <script id="overdue-tasks-template" type="text/html">
+        <div style="font-size: 84px; line-height: 101px; color: \\#F31700">7</div>
+        <div class="k-card-title">From Yesterday: 16</div>
+    </script>
+    <script id="issues-template" type="text/html">
+        <div style="font-size: 84px; line-height: 101px; color: \\#FFC000">47</div>
+        <div class="k-card-title">Closed By Team: 15</div>
+    </script>
+    <script id="used-space-template" type="text/html">
+        <div>
+            <kendo-arcgauge name="gauge" value="50" center-template="<span style='color:\\\\#0058E9;font-size:28px;font-weight: bold;'>\\#:value\\#%</span>" style="height:80px;" color="\\#0058E9" is-in-client-template="true">
+                <scale min="0" max="100">
+                </scale>
+            </kendo-arcgauge>
+        </div>
+        <div class="k-card-title">25 of 50GB Used</div>
+    </script>
+
+    <script id="total-points-header-template" type="text/html">
+        <span class="k-card-title">Total Sales</span>
+        <span class="k-scheduler-navigation k-button-group"><button class="k-button k-nav-today" title="Today"><span class="k-button-text">Today</span></button><button class="k-button k-button-icon k-icon-button k-nav-prev" title="Previous" aria-label="Previous"><span class="k-icon k-i-arrow-60-left"></span></button><button class="k-button k-button-icon k-icon-button k-nav-next" title="Next" aria-label="Next"><span class="k-icon k-i-arrow-60-right"></span></button></span>
+        <span><span class="k-icon k-i-calendar"></span><span>@DateTime.Now.ToLongDateString()</span></span>
+        <span class="k-spacer k-toolbar-spacer"></span>
+        <kendo-buttongroup name="total-points-header-options" is-in-client-template="true" style="float:right">
+            <buttongroup-items>
+                <item text="Trend" html-attributes='new Dictionary<string, object>{ ["class"] = "k-primary" }'></item>
+                <item text="Volume"></item>
+            </buttongroup-items>
+        </kendo-buttongroup>
+    </script>
+
+    <script id="total-points-template" type="text/html">
+        <div style="width:100%;">
+            <kendo-chart name="chart" is-in-client-template="true" theme="sass">
+                <chart-legend position="ChartLegendPosition.Bottom" align="ChartLegendAlign.Center">
+                    <labels><chart-legend-labels-margin right="200" /></labels>
+                </chart-legend>
+                <chart-area background="transparent"></chart-area>
+                <series-defaults type="ChartSeriesType.Line"></series-defaults>
+                <datasource>
+                    <transport>
+                        <read url="@Url.Page("Index","GetSales")" data="forgeryToken" type="POST" />
+                    </transport>
+                    <schema>
+                        <model>
+                            <fields>
+                                <field name="Region" type="string"></field>
+                                <field name="Date" type="date"></field>
+                                <field name="Sum" type="number"></field>
+                            </fields>
+                        </model>
+                    </schema>
+                    <groups>
+                        <group field="Region"></group>
+                    </groups>
+                </datasource>
+                <series>
+                    <series-item style="ChartSeriesStyle.Normal" category-field="Date" field="Sum">
+                    </series-item>
+                </series>
+
+                <category-axis>
+                    <category-axis-item field="Date">
+                        <labels format="MMM">
+                        </labels>
+                    </category-axis-item>
+                </category-axis>
+
+                <value-axis>
+                    <value-axis-item type="numeric">
+                        <labels format="{0:c}"></labels>
+                    </value-axis-item>
+                </value-axis>
+            </kendo-chart>
+        </div>
+    </script>
+
+    <script id="mk-team-header-template" type="text/html">
+        <span class="k-card-title">MK Team</span>
+        <span class="k-spacer k-toolbar-spacer"></span>
+        <kendo-buttongroup name="mk-team-header-options" is-in-client-template="true" style="float:right">
+            <buttongroup-items>
+                <item text="My Team" html-attributes='new Dictionary<string, object>{ ["class"] = "k-primary" }'></item>
+                <item text="All Teams"></item>
+            </buttongroup-items>
+        </kendo-buttongroup>
+    </script>
+
+    <script id="mk-team-template" type="text/html">
+        <kendo-grid name="grid" is-in-client-template="true" on-data-bound="onDataBound">
+            <columns>
+                <column selectable="true" width="50"></column>
+                <column title="Employee">
+                    <columns>
+                        <column field="FullName" width="320" title="Contact Name" template="<span class='k-avatar k-avatar-circle k-avatar-image k-avatar-sm'><img src='@Url.Content("../assets/employees/\\#= getId(Id)\\#.jpg")'/></span> \\#=FullName\\#"></column>
+                        <column field="JobTitle" width="320" title="Job title"></column>
+                    </columns>
+                </column>
+                <column title="Performance">
+                    <columns>
+                        <column field="Rating" width="320" html-attributes='new Dictionary<string, object>{ ["style"] = "text-align:center" }' template="<input id='rating_\\#=Id\\#' class='ratingInGrid' />"></column>
+                        <column field="Budget" format="{0:c}" width="320"></column>
+                    </columns>
+                </column>
+            </columns>
+            <toolbar>
+                <toolbar-button name="search"></toolbar-button>
+                <toolbar-button name="excel"></toolbar-button>
+                <toolbar-button name="pdf"></toolbar-button>
+            </toolbar>
+            <sortable enabled="true" />
+            <pageable enabled="true" button-count="5" input="true" />
+            <groupable enabled="true" />
+            <datasource type="DataSourceTagHelperType.Ajax" page-size="7">
+                <transport>
+                    <read url="@Url.Page("Index", "Read")" data="forgeryToken" />
+                </transport>
+            </datasource>
+        </kendo-grid>
+    </script>
+
+    <kendo-tilelayout name="dashboard-tilelayout" columns="4" resizable="true" reorderable="true" columns-width="350px" rows-height="230px" on-resize="onTileResize">
+        <containers>
+            <container body-template-id="tasks-ontrack-template" col-span="1" row-span="1">
+                <container-header template="<span class=k-card-title>Tasks On Track</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+            </container>
+            <container body-template-id="overdue-tasks-template" col-span="1" row-span="1">
+                <container-header template="<span class=k-card-title>Overdue Tasks</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+            </container>
+            <container body-template-id="issues-template" col-span="1" row-span="1">
+                <container-header template="<span class=k-card-title>Issues</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+            </container>
+            <container body-template-id="used-space-template" col-span="1" row-span="1">
+                <container-header template="<span class=k-card-title>Used Space</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+            </container>
+            <container body-template-id="total-points-template" col-span="4" row-span="2">
+                <container-header template-id="total-points-header-template" />
+            </container>
+            <container body-template-id="mk-team-template" col-span="4" row-span="3">
+                <container-header template-id="mk-team-header-template" />
+            </container>
+        </containers>
+    </kendo-tilelayout>
 </div>
+
+<script>
+    function onTileResize(e) {
+        // for widgets that do not auto resize
+        // https://docs.telerik.com/kendo-ui/styles-and-layout/using-kendo-in-responsive-web-pages
+        kendo.resize(e.container, true);
+    }
+    function onDataBound(e) {
+        var items = e.sender.items();
+        items.each((item, element) => createRating(item, element))
+    }
+
+    function createRating(item, element) {
+        var grid = $("#grid").getKendoGrid();
+        var dataItem = grid.dataItem(element);
+        var rating = $(element).find('.ratingInGrid');
+        rating.kendoRating({
+            min: 1,
+            max: 5,
+            value: dataItem.Rating,
+            label: false
+        });
+    }
+
+    function getId(id) {
+        return (id % 9) + 1
+    }
+
+    function forgeryToken() {
+        return kendo.antiForgeryTokens();
+    }
+
+    $(document).ready(function () {
+        $("#chart").getKendoChart().resize()
+        $("#grid").getKendoGrid().resize(true)
+    })
+</script>
+<style>
+    .k-tilelayout-item-body.k-card-body:nth-child(-n+4) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #dashboard-tilelayout .k-card-header {
+        border-style: none;
+    }
+
+    .k-rating-item.k-state-selected {
+        color: #FFA600;
+    }
+
+    .k-card-title {
+        font-size: 20px;
+    }
+</style>

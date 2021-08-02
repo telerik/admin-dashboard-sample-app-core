@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AdminDashboard.Data;
+using AdminDashboard.Data.Models.Employees;
+using AdminDashboard.Data.Models.Sales;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,15 +16,46 @@ namespace AdminDashboard.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public void OnGet()
         {
 
+        }
+
+        public JsonResult OnPostGetSales()
+        {
+            var salesByRegion = _context.Sales
+                                .Where(sale => sale.TransactionDate > new DateTime(2019, 1, 1))
+                                .Where(sale => sale.TransactionDate < new DateTime(2020, 1, 1))
+                                .GroupBy(sale => new { sale.Region, sale.TransactionDate.Year, sale.TransactionDate.Month })
+                                .Select(group => new SalesByDateViewModel
+                                {
+                                    Date = new DateTime(group.Key.Year, group.Key.Month, 1),
+                                    Region = group.Key.Region,
+                                    Sum = group.Sum(sale => sale.Amount)
+                                });
+
+            return new JsonResult(salesByRegion.ToList());
+        }
+
+        public JsonResult OnPostRead([DataSourceRequest] DataSourceRequest request)
+        {
+            var employees = _context.Employees.Select(x => new EmployeeViewModel()
+            {
+                Id = x.Id,
+                FullName = x.FullName,
+                JobTitle = x.JobTitle,
+                Rating = x.Rating,
+                Budget = x.Budget
+            });
+            return new JsonResult(employees.ToDataSourceResult(request));
         }
     }
 }

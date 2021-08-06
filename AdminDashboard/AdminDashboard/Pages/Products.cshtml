@@ -1,5 +1,8 @@
 ﻿@page
 @model AdminDashboard.Pages.ProductsModel
+@{ 
+    ViewData["Title"] = "Products";
+}
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @Html.AntiForgeryToken()
 

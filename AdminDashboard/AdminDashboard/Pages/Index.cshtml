@@ -5,13 +5,13 @@
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @Html.AntiForgeryToken()
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Overview";
 }
 
 <div class="k-d-flex-col k-justify-content-center">
-    <h3>
+    <div class="greeting">
         Hello Again, FullName!
-    </h3>
+    </div>
 
 
     <script id="tasks-ontrack-template" type="text/html">
@@ -217,5 +217,12 @@
 
     .k-card-title {
         font-size: 20px;
+    }
+    .greeting {
+        font-weight: 300;
+        font-size: 28px;
+        line-height: 37px;
+        padding: 16px;
+        background: #fafafa;
     }
 </style>

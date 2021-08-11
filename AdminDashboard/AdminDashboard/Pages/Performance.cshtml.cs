@@ -6,16 +6,19 @@ using AdminDashboard.Data;
 using AdminDashboard.Data.Models.Sales;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace AdminDashboard.Pages
 {
     public class PerformanceModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<PerformanceModel> _logger;
 
-        public PerformanceModel(ApplicationDbContext context)
+        public PerformanceModel(ApplicationDbContext context, ILogger<PerformanceModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
         [BindProperty]
         public int Target { get; set; }
@@ -46,7 +49,7 @@ namespace AdminDashboard.Pages
 
         }
 
-        public JsonResult OnPostGetSales()
+        public JsonResult OnPostGetSalesPreferences()
         {
             var salesByPaymentType = _context.Sales
                                 .Where(sale => sale.TransactionDate > new DateTime(2019, 1, 7))
@@ -64,17 +67,35 @@ namespace AdminDashboard.Pages
             return new JsonResult(salesByPaymentType.ToList());
         }
 
+        public JsonResult OnPostGetSales()
+        {
+            var salesByRegion = _context.Sales
+                                .Where(sale => sale.TransactionDate > new DateTime(2019, 1, 1))
+                                .Where(sale => sale.TransactionDate < new DateTime(2020, 1, 1))
+                                .GroupBy(sale => new { sale.Region, sale.TransactionDate.Year, sale.TransactionDate.Month })
+                                .Select(group => new SalesByDateViewModel
+                                {
+                                    Date = new DateTime(group.Key.Year, group.Key.Month, 1),
+                                    Region = group.Key.Region,
+                                    Sum = group.Sum(sale => sale.Amount)
+                                });
+
+            return new JsonResult(salesByRegion.ToList());
+        }
+
         public JsonResult OnPostGetSalesPerRegion(string region)
         {
+            var target = region == "EMEA" ? 1200 : 1400;
             var salesPerRegion = _context.Sales
                 .Where(sale => region == "EMEA" ? sale.Region == region : sale.Region != region)
                 .GroupBy(sale => new { sale.Country, sale.Region })
                 .Select(group => new SalesPerRegionViewModel()
                 {
                     Country = group.Key.Country,
-                    Sum = group.Sum(sale => sale.Amount),
+                    Completed = group.Sum(sale => sale.Amount) / target * 100,
+                    NotCompleted = (target - group.Sum(sale => sale.Amount)) / target * 100
                 })
-                .OrderByDescending(x => x.Sum)
+                .OrderByDescending(x => x.Completed)
                 .Take(5)
                 .ToList();
 
@@ -93,7 +114,8 @@ namespace AdminDashboard.Pages
                 .Select(group => new
                 {
                     Group = group.Key.ProductGroup,
-                    Amount = group.Where(sale => sale.ProductGroup == group.Key.ProductGroup).Sum(sale => sale.Amount)
+                    Amount = group.Where(sale => sale.ProductGroup == group.Key.ProductGroup).Sum(sale => sale.Amount),
+                    Explode = group.Key.ProductGroup == "Consumer Food" ? true : false
                 });
             return new JsonResult(salesPerGroup.ToList());
         }

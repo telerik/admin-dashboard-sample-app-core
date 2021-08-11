@@ -29,7 +29,7 @@ namespace AdminDashboard.Pages
 
         }
 
-        public JsonResult OnPostGetSales()
+        public JsonResult OnPostGetSales(int type)
         {
             var salesByRegion = _context.Sales
                                 .Where(sale => sale.TransactionDate > new DateTime(2019, 1, 1))
@@ -39,23 +39,30 @@ namespace AdminDashboard.Pages
                                 {
                                     Date = new DateTime(group.Key.Year, group.Key.Month, 1),
                                     Region = group.Key.Region,
-                                    Sum = group.Sum(sale => sale.Amount)
+                                    Sum = type != 1 ? group.Sum(sale => sale.Amount) : group.Count()
                                 });
 
             return new JsonResult(salesByRegion.ToList());
         }
 
-        public JsonResult OnPostRead([DataSourceRequest] DataSourceRequest request)
+        public JsonResult OnPostRead([DataSourceRequest] DataSourceRequest request, int team)
         {
-            var employees = _context.Employees.Select(x => new EmployeeViewModel()
+            var employees = _context.Employees.AsQueryable();
+            
+            if (team != 1)
+            {
+                employees = employees.Where(x => x.JobTitle.Contains("Engineer"));
+            }
+
+            var data = employees.Select(x => new EmployeeViewModel()
             {
                 Id = x.Id,
                 FullName = x.FullName,
                 JobTitle = x.JobTitle,
                 Rating = x.Rating,
                 Budget = x.Budget
-            });
-            return new JsonResult(employees.ToDataSourceResult(request));
+            }).ToList();
+            return new JsonResult(data.ToDataSourceResult(request));
         }
     }
 }

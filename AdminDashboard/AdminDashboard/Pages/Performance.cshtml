@@ -20,7 +20,7 @@
             <series-defaults type="ChartSeriesType.Area"></series-defaults>
             <datasource>
                 <transport>
-                    <read url="@Url.Page("Index","GetSales")" data="forgeryToken" type="POST" />
+                    <read url="@Url.Page("Performance","GetSales")" data="forgeryToken" type="POST" />
                 </transport>
                 <schema>
                     <model>
@@ -56,7 +56,7 @@
     </div>
 </script>
 <script id="performance-template" type="text/html">
-    <kendo-chart name="performanceChart" is-in-client-template="true" theme="sass" style="height:300px;">
+    <kendo-chart name="performanceChart" is-in-client-template="true" series-colors='new string[]{"\\#28B4C8","\\#2D73F5","\\#AA46BE"}' theme="sass" style="height:300px;">
         <chart-legend position="ChartLegendPosition.Bottom">
             <labels template="\\#= data.series._groupValue\\#"></labels>
         </chart-legend>
@@ -65,7 +65,7 @@
         </category-axis>
         <datasource>
             <transport>
-                <read url="@Url.Page("Performance","GetSales")" data="forgeryToken" type="POST" />
+                <read url="@Url.Page("Performance","GetSalesPreferences")" data="forgeryToken" type="POST" />
             </transport>
             <schema>
                 <model>
@@ -130,9 +130,13 @@
     </div>
 </script>
 <script id="europe-template" type="text/html">
-    <kendo-chart name="europeChart" is-in-client-template="true" theme="sass" style="height:300px;">
+    <kendo-chart name="europeChart" is-in-client-template="true" style="height:300px;">
         <chart-legend position="ChartLegendPosition.Top"></chart-legend>
-        <series-defaults type="ChartSeriesType.Bar">
+        <chart-area>
+            <margin right="20"/>
+        </chart-area>
+        <series-defaults type="ChartSeriesType.Bar" gap="4">
+            <stack type="100%" />
         </series-defaults>
         <category-axis>
             <category-axis-item>
@@ -143,7 +147,8 @@
         </category-axis>
         <value-axis>
             <value-axis-item>
-                <labels position="ChartAxisLabelsPosition.Start"></labels>
+                <labels position="ChartAxisLabelsPosition.Start" color="\\#8F8F8F" font="bold 12px  Roboto,sans-serif">
+                </labels>
                 <major-grid-lines visible="false" />
                 <line visible="false" />
             </value-axis-item>
@@ -156,25 +161,35 @@
                 <model>
                     <fields>
                         <field name="Country" type="string"></field>
-                        <field name="Sum" type="number"></field>
+                        <field name="Completed" type="number"></field>
+                        <field name="NotCompleted" type="number"></field>
                     </fields>
                 </model>
             </schema>
             <sorts>
-                <sort field="Sum" direction="Ascending" />
+                <sort field="Completed" direction="Ascending" />
             </sorts>
         </datasource>
         <series>
-            <series-item field="Sum" category-field="Country" color-field="Color" gap="10" spacing="0.2">
+            <series-item field="Completed" category-field="Country" color-field="Color" gap="10" spacing="0.2">
+            </series-item>
+            <series-item field="NotCompleted" category-field="Country" gap="10" color="rgba(0, 0, 0, 0.08)" spacing="0.2">
+                <labels visible="true" color="\\#424242" template='\\#= kendo.toString(100-value,"n0") \\#%' font="bold 14px  Arial,Helvetica,sans-serif"></labels>
+                <border width="1" color="rgba(0, 0, 0, 0.08)"/>
             </series-item>
         </series>
     </kendo-chart>
 </script>
 
 <script id="global-template" type="text/html">
-    <kendo-chart name="globalChart" is-in-client-template="true" theme="sass" style="height:300px;">
+    <kendo-chart name="globalChart" is-in-client-template="true" style="height:300px;">
         <chart-legend position="ChartLegendPosition.Top"></chart-legend>
-        <series-defaults type="ChartSeriesType.Bar"></series-defaults>
+        <chart-area>
+            <margin right="20" />
+        </chart-area>
+        <series-defaults type="ChartSeriesType.Bar" gap="4">
+            <stack type="100%" />
+        </series-defaults>
         <category-axis>
             <category-axis-item>
                 <line visible="false" />
@@ -184,9 +199,10 @@
         </category-axis>
         <value-axis>
             <value-axis-item>
-                <line visible="false" />
+                <labels position="ChartAxisLabelsPosition.Start" color="\\#8F8F8F" font="bold 12px  Roboto,sans-serif">
+                </labels>
                 <major-grid-lines visible="false" />
-                <labels position="ChartAxisLabelsPosition.Start"></labels>
+                <line visible="false" />
             </value-axis-item>
         </value-axis>
         <datasource>
@@ -197,16 +213,21 @@
                 <model>
                     <fields>
                         <field name="Country" type="string"></field>
-                        <field name="Sum" type="number"></field>
+                        <field name="Completed" type="number"></field>
+                        <field name="NotCompleted" type="number"></field>
                     </fields>
                 </model>
             </schema>
             <sorts>
-                <sort field="Sum" direction="Ascending" />
+                <sort field="Completed" direction="Ascending" />
             </sorts>
         </datasource>
         <series>
-            <series-item field="Sum" category-field="Country" color-field="Color" gap="10" spacing="0.2">
+            <series-item field="Completed" category-field="Country" color-field="Color" gap="10" spacing="0.2">
+            </series-item>
+            <series-item field="NotCompleted" category-field="Country" gap="10" color="rgba(0, 0, 0, 0.08)" spacing="0.2">
+                <labels visible="true" color="\\#424242" template='\\#= kendo.toString(100-value,"n0") \\#%' font="bold 14px  Arial,Helvetica,sans-serif"></labels>
+                <border width="1" color="rgba(0, 0, 0, 0.08)" />
             </series-item>
         </series>
     </kendo-chart>
@@ -224,14 +245,13 @@
                     <fields>
                         <field name="Group" type="string"></field>
                         <field name="Amount" type="number"></field>
+                        <field name="Explode" type="boolean"></field>
                     </fields>
                 </model>
             </schema>
         </datasource>
         <series>
-            <series-item field="Amount" category-field="Group">
-                <border width="100" />
-                <highlight><border width="10" /></highlight>
+            <series-item field="Amount" category-field="Group" explode-field="Explode">
             </series-item>
         </series>
         <chart-legend position="ChartLegendPosition.Right">

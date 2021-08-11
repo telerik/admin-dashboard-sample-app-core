@@ -9,6 +9,7 @@ namespace AdminDashboard.Data.Models.Sales
     {
         public string Country { get; set; }
         public string Color { get; set; }
-        public double Sum { get; set; }
+        public double Completed { get; set; }
+        public double NotCompleted { get; set; }
     }
 }

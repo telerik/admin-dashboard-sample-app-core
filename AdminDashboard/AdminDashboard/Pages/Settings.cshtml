@@ -49,54 +49,72 @@
                     .Grid(g => g.Cols(2).Gutter(20))
                     .Items(items => {
                         items.Add().Field(f => f.BirthDate).Editor(e=>e.DateInput().Format("{0:MM|dd|yy}")).Label("Birth Date");
-                        items.Add().Field(f => f.Country).Label("Country");
+                        items.Add().Field(f => f.Country).Label("Country").Editor(e=>e.DropDownList()
+                              .DataTextField("Text")
+                              .DataValueField("Value")
+                              .BindTo(new List<SelectListItem>() {
+                                  new SelectListItem() {
+                                      Text = "USA",
+                                      Value = "1"
+                                  },
+                                  new SelectListItem() {
+                                      Text = "United Kingdom",
+                                      Value = "2"
+                                  },
+                                  new SelectListItem() {
+                                      Text = "Bulgaria",
+                                      Value = "3"
+                                  }
+                              })
+                        );
                         items.Add().Field(f => f.Website).Label("Website");
                         items.Add().Field(f => f.WorkPhone).Label("Phone Number")
                             .Editor(e=>e.MaskedTextBox().Mask("(+9) 0000-000-00-00"));
                     })
-                    .ButtonsTemplate(" ")
+                    .ButtonsTemplateId("formButtons")
                     .ToClientTemplate()
                 )
-        </div>
-        <div class="k-d-flex-row k-justify-content-between">
-            <div>
-                <kendo-switch name="public" checked="true" is-in-client-template="true"></kendo-switch> Public Profile
-            </div>
-            <kendo-button name="saveChanges" disabled="disabled" class="k-primary" is-in-client-template="true">Save Changes</kendo-button>
         </div>
     </div>
 </script>
 
+<script id="formButtons" type="text/html">
+    <div>
+        <input data-role="switch" data-checked="true"/> Public Profile
+    </div>
+    <button class="k-button k-primary k-form-submit k-state-disabled" type="submit">Save Changes</button>
+</script>
+
 <script id="date-template" type="text/html">
     <div style="display:flex; justify-content:center; flex-direction:row; align-content:center">
-        <kendo-calendar name="calendar" is-in-client-template="true"></kendo-calendar>
+        <kendo-calendar name="calendar" component-type="modern" week-number="true" is-in-client-template="true"></kendo-calendar>
     </div>
 </script>
 
 <script id="weather-header-template" type="text/html">
     <span class="k-card-title">Weather</span>
     <span class="k-spacer k-toolbar-spacer"></span>
-    <span style="float:right"><span class="k-icon k-i-globe"></span><span>Sofia</span></span>
+    <a class="k-card-title k-link" style="float: right; color: \\#0058E9 "><span class="k-icon k-i-globe" style="margin-right:9px;"></span><span>Sofia</span></a>
 </script>
 
 <script id="weather-template" type="text/html">
     <div class="k-d-flex-col k-align-items-center k-justify-content-around">
         <div style="width: 100px; height: 100px; background-image: url(../assets/settings/cloud.svg)"></div>
         <div class="k-state-disabled">Partly Cloudy</div>
-        <div style="font-size: 70px; line-height: 84px; color: \\#0058E9 ">12 &\\#176;C</div>
+        <div style="font-size: 70px; line-height: 84px; color: \\#0058E9">12 &\\#176;C</div>
     </div>
     <div class="k-card-footer">
-        <div>
-            <div >
-                Humidity:
-                Dew:
-                Pressure:
+        <div class="weather-data-container k-d-flex-row k-align-items-center k-justify-content-center">
+            <div>
+                Humidity:<br>
+                Dew:<br>
+                Pressure:<br>
                 Wind Speed:
             </div>
-            <div >
-                76%
-                2˚C
-                1031mb
+            <div>
+                76%<br>
+                2˚C<br>
+                1031mb<br>
                 12km/h NW
             </div>
         </div>
@@ -115,3 +133,22 @@
         </container>
     </containers>
 </kendo-tilelayout>
+<style>
+    .weather-data-container {
+        padding: 8px 0px 0px;
+        gap: 18px
+    }
+    .weather-data-container > div {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 16px;
+    }
+    .weather-data-container > div:nth-child(1) {
+        font-weight: bold;
+        text-align: right;
+    }
+    #UserInformationForm > div.k-form-buttons{
+        justify-content:space-between;
+    }
+</style>

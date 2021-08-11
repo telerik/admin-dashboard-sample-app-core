@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Signup"
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -11,7 +11,7 @@
 
 <div class="form-container k-d-flex-col k-align-items-center k-justify-content-center">
     <div>
-        <img src="../../../../../assets/signin/signin.svg" />
+        <img src="@Url.Content("~/assets/signin/signin.svg")" />
         <div class="signin k-justify-content-center">Sign Up</div>
         <div class="register k-d-flex-row k-justify-content-evenly"><span>Already have an account?</span> <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign In</a></div>
     </div>
@@ -34,7 +34,7 @@
                         .EditorTemplateHandler("setPasswordEditor");
                     items.Add()
                        .Field(f => f.Company)
-                       .Label(l => l.Text("Comapny"));
+                       .Label(l => l.Text("Company"));
                     items.Add()
                         .Field(f => f.AgreeToTerms)
                         .Label(l=>l.Text("<span>I agree to the <a href=\"#\">Terms of Services</a> and <a href=\"#\">Privacy Policy<a/></span>").Encoded(false));

@@ -28,14 +28,15 @@ namespace AdminDashboard.Pages
         public UserDetailsModel UserDetails { get; set; }
         [BindProperty]
         public UserInformationModel UserInformation { get; set; }
-        public async void OnGetAsync()
+        public async Task OnGetAsync()
         {
             ClaimsPrincipal currentUser = User;
+            
             var loggedUser = await _userManager.GetUserAsync(User);
             if (UserDetails == null)
             {
                 UserDetails = new UserDetailsModel()
-                { 
+                {
                     Email = loggedUser.Email,
                     Username = loggedUser.UserName,
                     Phone = loggedUser.PhoneNumber,

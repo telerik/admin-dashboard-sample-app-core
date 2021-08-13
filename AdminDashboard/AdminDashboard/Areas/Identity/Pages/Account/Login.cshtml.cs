@@ -59,7 +59,12 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
         {
             if (Input == null)
             {
-                Input = new InputModel();
+                Input = new InputModel()
+                {
+                    Email = "jaxons.danniels@company.com",
+                    Password = "User*123"
+
+                };
             }
 
             if (!string.IsNullOrEmpty(ErrorMessage))

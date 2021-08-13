@@ -3,6 +3,7 @@ using AdminDashboard.Data.Models.Employees;
 using AdminDashboard.Data.Models.Sales;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace AdminDashboard.Pages
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;

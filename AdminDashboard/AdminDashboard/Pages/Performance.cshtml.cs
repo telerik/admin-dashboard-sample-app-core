@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.Data;
 using AdminDashboard.Data.Models.Sales;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 namespace AdminDashboard.Pages
 {
+    [Authorize]
     public class PerformanceModel : PageModel
     {
         private readonly ApplicationDbContext _context;

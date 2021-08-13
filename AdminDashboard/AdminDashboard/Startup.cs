@@ -34,6 +34,11 @@ namespace AdminDashboard
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.LoginPath = "/Login";
+            });
             services.AddRazorPages().AddJsonOptions(options =>
                 options.JsonSerializerOptions.PropertyNamingPolicy = null);
 

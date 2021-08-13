@@ -1,9 +1,10 @@
 ﻿@page "/Login"
 @model LoginModel
-
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @{
     ViewData["Title"] = "Log in";
     Layout = "Shared/_SignInLayout.cshtml";
+    var token = Xsrf.GetAndStoreTokens(HttpContext).RequestToken;
 }
 <div class="form-container k-d-flex-col k-align-items-center k-justify-content-center">
     <div class="logo-container k-d-flex-col k-align-items-center k-justify-content-center">
@@ -56,9 +57,11 @@
             left: calc(50% - 75px/2 + 97.5px);
             border: 1px solid #8F8F8F;
         }
-    .logo-container{
-        gap:20px;
+
+    .logo-container {
+        gap: 20px;
     }
+
     .signin {
         display: flex;
         font-weight: 300;
@@ -90,6 +93,7 @@
     function setPasswordEditor(container, options) {
         container.append($("<input type='password' class='k-textbox k-valid' id='Password' name='Password' title='Password' required='required' autocomplete='off' aria-labelledby='Password-form-label' data-bind='value:Password' aria-describedby='Password-form-hint'>"));
     }
+     $("#Login").append($("<input type='hidden' name='__RequestVerificationToken' value='@token' data-stop='true' />"))
 </script>
 
 @section Scripts {

@@ -1,5 +1,7 @@
 using AdminDashboard.Data;
+using AdminDashboard.Data.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +32,7 @@ namespace AdminDashboard
                     webBuilder.UseStartup<Startup>();
                 });
 
-        private static void CreateDbIfNotExists(IHost host)
+        private static async void CreateDbIfNotExists(IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {
@@ -40,8 +42,9 @@ namespace AdminDashboard
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     var environment = services.GetRequiredService<IWebHostEnvironment>();
+                    UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     context.Database.Migrate();
-                    DbInitializer.Initialize(context, environment);
+                    await DbInitializer.Initialize(context, environment, userManager);
                 }
                 catch (Exception ex)
                 {

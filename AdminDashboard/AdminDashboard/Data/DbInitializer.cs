@@ -1,7 +1,9 @@
-﻿using AdminDashboard.Data.Models.Employees;
+﻿using AdminDashboard.Data.Models;
+using AdminDashboard.Data.Models.Employees;
 using AdminDashboard.Data.Models.Sales;
 using CsvHelper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,12 +15,44 @@ namespace AdminDashboard.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext context, IWebHostEnvironment environment)
+        public static async Task Initialize(ApplicationDbContext context, IWebHostEnvironment environment, UserManager<ApplicationUser> userManager)
         {
             context.Database.EnsureCreated();
             SeedSales(environment, context);
             SeedTeams(context);
             SeedEmployees(context);
+            await SeedInitialUser(userManager, context);
+
+        }
+
+        private static async Task SeedInitialUser(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        {
+            if (context.Users.Any())
+            {
+                return;
+            }
+            ApplicationUser user = new ApplicationUser()
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "jaxons.danniels@company.com",
+                FullName = "Jaxons Danniels",
+                Email = "jaxons.danniels@company.com",
+                Company = "Progress",
+                LockoutEnabled = false,
+                PhoneNumber = "112345678901",
+                PhoneNumberConfirmed = true,
+                EmailConfirmed = true,
+                TwoFactorEnabled = false
+            };
+
+            var result = await userManager.CreateAsync(user);
+            if (result.Succeeded)
+            {
+                await userManager.AddPasswordAsync(user, "User*123");
+            }
+
+            context.SaveChanges();
+
         }
 
         private static void SeedTeams(ApplicationDbContext context)

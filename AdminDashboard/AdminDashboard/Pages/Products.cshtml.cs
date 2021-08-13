@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdminDashboard.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AdminDashboard.Pages
 {
+    [Authorize]
     public class ProductsModel : PageModel
     {
         private readonly ApplicationDbContext _context;

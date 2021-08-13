@@ -112,14 +112,14 @@
                 <column selectable="true" width="50"></column>
                 <column title="Employee">
                     <columns>
-                        <column field="FullName" width="320" title="Contact Name" template="<span class='k-avatar k-avatar-circle k-avatar-image k-avatar-sm'><img src='@Url.Content("../assets/employees/\\#= getId(Id)\\#.jpg")'/></span> \\#=FullName\\#"></column>
-                        <column field="JobTitle" width="320" title="Job title"></column>
+                        <column field="FullName"  title="Contact Name" template="<span class='k-avatar k-avatar-circle k-avatar-image k-avatar-sm'><img src='@Url.Content("../assets/employees/\\#= getId(Id)\\#.jpg")'/></span> \\#=FullName\\#"></column>
+                        <column field="JobTitle"  title="Job title"></column>
                     </columns>
                 </column>
                 <column title="Performance">
                     <columns>
-                        <column field="Rating" width="320" html-attributes='new Dictionary<string, object>{ ["style"] = "text-align:center" }' template="<input id='rating_\\#=Id\\#' class='ratingInGrid' />"></column>
-                        <column field="Budget" format="{0:c}" width="320" template="\\#= getBudgetTemplate(data)\\#"></column>
+                        <column field="Rating"  html-attributes='new Dictionary<string, object>{ ["style"] = "text-align:center" }' template="<input id='rating_\\#=Id\\#' class='ratingInGrid' />"></column>
+                        <column field="Budget" format="{0:c}" template="\\#= getBudgetTemplate(data)\\#"></column>
                     </columns>
                 </column>
             </columns>

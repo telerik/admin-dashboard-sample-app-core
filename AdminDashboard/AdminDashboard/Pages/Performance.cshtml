@@ -254,7 +254,7 @@
             <series-item field="Amount" category-field="Group" explode-field="Explode">
             </series-item>
         </series>
-        <chart-legend position="ChartLegendPosition.Right">
+        <chart-legend position="ChartLegendPosition.Right"><item visual="labelVisual"/>
             <labels template="\\#: text \\# | \\#:kendo.toString(value, 'c0')\\#" font="bold 14px Roboto"></labels>
         </chart-legend>
         <tooltip visible="true" template="\\#= category \\#"></tooltip>
@@ -300,6 +300,51 @@
 </style>
 
 <script>
+    function labelVisual(e) {
+        var rect = new kendo.geometry.Rect([0, 0], [400, 20]);
+        var layout = new kendo.drawing.Layout(rect, {
+            spacing: 15
+        });
+
+        var label = new kendo.drawing.Text(e.series.data[e.pointIndex].Group, [40, 0], {
+            fill: {
+                color: e.options.labels.color
+            },
+            font: "normal 14px 'Roboto', sans-serif"
+        });
+
+        var value = new kendo.drawing.Text(kendo.toString(e.series.data[e.pointIndex].Amount, "c"), [0, 0], {
+            fill: {
+                color: e.options.labels.color
+            },
+            font: "bold 14px 'Roboto', sans-serif"
+        });
+
+        var marker = new kendo.drawing.Path({
+            fill: {
+                color: e.options.markers.background
+            },
+            stroke: {
+                width: 3,
+                color: e.options.markers.background
+            }
+        }).moveTo(0, 0).moveTo(10, 10).lineTo(30, 10);
+
+        var spaceRect = new kendo.geometry.Rect([0, 0], [(200 - value.measure().width - label.measure().width), 20]);
+        var spacer = new kendo.drawing.Rect(spaceRect, {
+            opacity: 0
+        });
+
+        var labelGroup = new kendo.drawing.Group();
+        labelGroup.append(marker, label);
+
+
+        layout.append(labelGroup, spacer, value);
+        layout.reflow()
+
+        return layout;
+    }
+
     function onTileResize(e) {
         // for widgets that do not auto resize
         // https://docs.telerik.com/kendo-ui/styles-and-layout/using-kendo-in-responsive-web-pages

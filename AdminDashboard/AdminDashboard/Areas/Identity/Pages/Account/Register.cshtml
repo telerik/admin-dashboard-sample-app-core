@@ -10,7 +10,7 @@
 @Html.AntiForgeryToken()
 
 <div class="form-container k-d-flex-col k-align-items-center k-justify-content-center">
-    <div>
+    <div class="logo-container k-d-flex-col k-align-items-center k-justify-content-center">
         <img src="@Url.Content("~/assets/signin/signin.svg")" />
         <div class="signin k-justify-content-center">Sign Up</div>
         <div class="register k-d-flex-row k-justify-content-evenly"><span>Already have an account?</span> <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign In</a></div>
@@ -43,6 +43,9 @@
             )
 </div>
 <style>
+    .logo-container {
+        gap: 32px;
+    }
     .form-container {
         width: 270px;
     }
@@ -67,6 +70,7 @@
         display: flex;
         align-items: center;
         color: #424242;
+        gap: 18px;
     }
 
     #Register > div.k-form-layout.k-d-grid.k-grid-cols-1 > div:nth-child(5) {

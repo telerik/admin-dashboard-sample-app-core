@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using AdminDashboard.Data.Models
+@inject UserManager<ApplicationUser> userManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -50,8 +52,8 @@
     <script id="drawerTemplate" type="text/html">
         <div class="k-d-flex-col k-align-items-center k-justify-content-evenly" style="height:218px;">
             <div class="k-avatar k-avatar-circle k-avatar-image k-avatar-lg" id="avatar"><img src='@Url.Content("~/assets/navigation/Avatar.svg")' /></div>
-            <div id="name">FullName</div>
-            <div id="email">email@email.com</div>
+            <div id="name">@userManager.GetUserAsync(User).Result.FullName</div>
+            <div id="email">@userManager.GetUserAsync(User).Result.Email</div>
 
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
                 <button type="submit" class="k-button k-secondary k-state-active">Logout</button>
@@ -76,16 +78,18 @@
             font-size: 12px;
             text-decoration-line: underline;
         }
+
         .title {
             font-size: 18px;
             line-height: 20px;
-            color:#2D73F5;
+            color: #2D73F5;
         }
+
         .app-bar-link {
             font-size: 14px;
             line-height: 20px;
             color: #424242;
-            cursor:pointer;
+            cursor: pointer;
         }
     </style>
 

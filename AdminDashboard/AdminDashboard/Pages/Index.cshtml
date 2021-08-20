@@ -140,7 +140,7 @@
         </kendo-grid>
     </script>
 
-    <kendo-tilelayout name="dashboard-tilelayout" columns="4" resizable="true" reorderable="true" columns-width="350px" rows-height="230px" on-resize="onTileResize">
+    <kendo-tilelayout name="dashboard-tilelayout" columns="4" resizable="true" reorderable="true" columns-width="25%" rows-height="230px" on-resize="onTileResize">
         <containers>
             <container body-template-id="tasks-ontrack-template" col-span="1" row-span="1">
                 <container-header template="<span class=k-card-title>Tasks On Track</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
@@ -236,9 +236,17 @@
         return kendo.antiForgeryTokens();
     }
 
-    $(document).ready(function () {
+    function resizeWidgets() {
         $("#chart").getKendoChart().resize()
         $("#grid").getKendoGrid().resize(true)
+    }
+
+    $(document).ready(function () {
+        resizeWidgets()
+
+        $(window).resize(function () {
+            resizeWidgets()
+        })
     })
 </script>
 <style>

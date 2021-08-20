@@ -111,7 +111,7 @@
 
 
 
-<kendo-tilelayout name="tilelayout" columns="1" resizable="true" reorderable="true" columns-width="1200px" rows-height="420px" on-resize="onTileResize">
+<kendo-tilelayout name="tilelayout" columns="1" resizable="true" reorderable="true" columns-width="100%" rows-height="420px" on-resize="onTileResize">
     <containers>
         <container body-template-id="revenue-rating-template" col-span="1" row-span="1">
         </container>
@@ -127,6 +127,7 @@
         flex-wrap: wrap;
         justify-content: center;
         gap: 32px;
+        max-height:1100px;
     }
 
     .k-card-image {
@@ -187,7 +188,17 @@
         // https://docs.telerik.com/kendo-ui/styles-and-layout/using-kendo-in-responsive-web-pages
         kendo.resize(e.container, true);
     }
+
+    function resizeWidgets() {
+        $("#revenue-rating-chart").getKendoChart().resize()
+    }
+
     $(document).ready(function () {
+        resizeWidgets()
+
+        $(window).resize(function () {
+            resizeWidgets()
+        })
 
         $("#search").on("change keyup", function () {
             var input = $(this).val();

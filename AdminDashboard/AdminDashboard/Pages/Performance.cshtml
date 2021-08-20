@@ -261,7 +261,7 @@
     </kendo-chart>
 </script>
 
-<kendo-tilelayout name="tilelayout" columns="6" resizable="true" reorderable="true" columns-width="175px" rows-height="380px" on-resize="onTileResize">
+<kendo-tilelayout name="tilelayout" columns="6" resizable="true" reorderable="true" columns-width="16%" rows-height="380px" on-resize="onTileResize">
     <containers>
         <container body-template-id="sales-revenue-template" col-span="6" row-span="1">
             <container-header template='<div class="k-card-title">Sales Revenue</div>' />
@@ -353,13 +353,17 @@
         // https://docs.telerik.com/kendo-ui/styles-and-layout/using-kendo-in-responsive-web-pages
         kendo.resize(e.container, true);
     }
+    function resizeWidgets() {
+        var charts = $(".k-chart");
+        charts.each((idx, elem) => $(elem).getKendoChart().resize())
+    }
+
     $(document).ready(function () {
-        //e.sender.resize();
-        $("#performanceChart").getKendoChart().resize()
-        $("#areaChart").getKendoChart().resize()
-        $("#europeChart").getKendoChart().resize()
-        $("#globalChart").getKendoChart().resize()
-        $("#costChart").getKendoChart().resize()
+        resizeWidgets()
+
+        $(window).resize(function () {
+            resizeWidgets()
+        })
     })
 
     function forgeryToken() {

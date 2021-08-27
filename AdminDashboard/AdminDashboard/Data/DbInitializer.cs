@@ -17,7 +17,7 @@ namespace AdminDashboard.Data
     {
         public static async Task Initialize(ApplicationDbContext context, IWebHostEnvironment environment, UserManager<ApplicationUser> userManager)
         {
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
             SeedSales(environment, context);
             SeedTeams(context);
             SeedEmployees(context);

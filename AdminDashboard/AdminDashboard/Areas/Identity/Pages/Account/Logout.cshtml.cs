@@ -23,17 +23,22 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            return await LogOut();
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            return await LogOut();
+        }
+
+        private async Task<IActionResult> LogOut()
+        {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-           
+
             return RedirectToPage("/Account/Login", new { area = "Identity" });
-           
         }
     }
 }

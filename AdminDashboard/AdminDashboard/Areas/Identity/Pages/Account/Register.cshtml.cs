@@ -60,9 +60,6 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
             public string Company { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
             public string Password { get; set; }
 
             public bool AgreeToTerms { get; set; }
@@ -80,8 +77,23 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            var model = Request.Form;
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            var userExists = await _userManager.FindByEmailAsync(Input.Email);
+            if (userExists != null)
+            {
+                ModelState.AddModelError("Email", "A User with this email is already registered");
+            }
+
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var PasswordValidationResult = await passwordValidator.ValidateAsync(_userManager, null, Input.Password);
+            if (!PasswordValidationResult.Succeeded)
+            {
+                ModelState.AddModelError("Password", "Password must contain an uppercase character, lowercase character, a digit, and a non-alphanumeric character and be at least six characters long.");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -92,6 +104,7 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
                     FullName = Input.FullName,
                     AgreeToTerms = Input.AgreeToTerms
                 };
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

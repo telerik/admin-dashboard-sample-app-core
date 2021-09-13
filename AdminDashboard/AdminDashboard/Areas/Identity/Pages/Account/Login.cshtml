@@ -14,6 +14,11 @@
     </div>
     @(Html.Kendo().Form<LoginModel.InputModel>()
                 .Name("Login")
+                 .Validatable(v =>
+                 {
+                     v.ValidationSummary(false);
+                     v.ValidateOnBlur(true);
+                 })
                 .FormData(Model.Input)
                 .Layout("grid")
                 .Grid(g => g.Cols(1).Gutter(5))
@@ -26,7 +31,7 @@
                     items.Add()
                         .Field(f => f.Password)
                         .Label(l => l.Text("Password:"))
-                        .EditorTemplateHandler("setPasswordEditor");
+                        .InputHtmlAttributes(new { @type = "password", autocomplete = "off" });
 
                     items.Add()
                         .Field(f => f.RememberMe)
@@ -91,9 +96,6 @@
     }
 </style>
 <script>
-    function setPasswordEditor(container, options) {
-        container.append($("<input type='password' class='k-textbox k-valid' id='Password' name='Password' title='Password' required='required' autocomplete='off' aria-labelledby='Password-form-label' data-bind='value:Password' aria-describedby='Password-form-hint'>"));
-    }
      $("#Login").append($("<input type='hidden' name='__RequestVerificationToken' value='@token' data-stop='true' />"))
 </script>
 

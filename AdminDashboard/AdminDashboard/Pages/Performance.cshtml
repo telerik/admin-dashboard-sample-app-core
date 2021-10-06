@@ -361,18 +361,6 @@
         // https://docs.telerik.com/kendo-ui/styles-and-layout/using-kendo-in-responsive-web-pages
         kendo.resize(e.container, true);
     }
-    function resizeWidgets() {
-        var charts = $(".k-chart");
-        charts.each((idx, elem) => $(elem).getKendoChart().resize(true))
-    }
-
-    $(document).ready(function () {
-        resizeWidgets()
-
-        $(window).resize(function () {
-            resizeWidgets()
-        })
-    })
 
     function forgeryToken() {
         return kendo.antiForgeryTokens();

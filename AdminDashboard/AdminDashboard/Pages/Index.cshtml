@@ -242,19 +242,6 @@
         return kendo.antiForgeryTokens();
     }
 
-    function resizeWidgets() {
-        $("#chart").getKendoChart().resize(true)
-        $("#grid").getKendoGrid().resize(true)
-    }
-
-    $(document).ready(function () {
-        resizeWidgets()
-
-        $(window).resize(function () {
-            resizeWidgets()
-        })
-    })
-
 </script>
 <style>
     @@media only screen and (max-width: 600px) {

@@ -190,16 +190,7 @@
         kendo.resize(e.container, true);
     }
 
-    function resizeWidgets() {
-        $("#revenue-rating-chart").getKendoChart().resize()
-    }
-
     $(document).ready(function () {
-        resizeWidgets()
-
-        $(window).resize(function () {
-            resizeWidgets()
-        })
 
         $("#search").on("change keyup", function () {
             var input = $(this).val();

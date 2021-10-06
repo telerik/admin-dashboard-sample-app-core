@@ -1,5 +1,8 @@
 ﻿@using AdminDashboard.Data.Models
 @inject UserManager<ApplicationUser> userManager
+@{ 
+    var routeUrl = Url.RouteUrl(ViewContext.RouteData.Values);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +13,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
 
     @* Add the Kendo UI styles: *@
@@ -23,14 +26,14 @@
     <script src="https://kendo.cdn.telerik.com/2021.2.616/js/jszip.min.js"></script>
 </head>
 <body>
-    <kendo-drawer name="drawer" mode="push" width="240" position="left" template-id="drawerTemplate" navigatable="true">
+    <kendo-drawer name="drawer" mode="push" width="240" position="left" template-id="drawerTemplate" auto-collapse="false" on-item-click="onItemClick">
         <mini enabled="false" />
         <content>
             <div>
                 <main role="main">
                     <kendo-appbar name="appbar" theme-color="AppBarThemeColor.Inherit" style="height:48px;">
                         <items>
-                            <appbar-item type="AppBarItemType.ContentItem" template="<span id='menuIcon' href='\\#'><span class='k-icon k-i-menu'></span></span>"></appbar-item>
+                            <appbar-item type="AppBarItemType.ContentItem" template="<span id='menuIcon' href='\\#' onclick='toggleDrawer()'><span class='k-icon k-i-menu'></span></span>"></appbar-item>
                             <appbar-item type="AppBarItemType.Spacer" width="16px"></appbar-item>
                             <appbar-item type="AppBarItemType.ContentItem" template="<div class='title'>@ViewData["Title"]</div>"></appbar-item>
                             <appbar-item type="AppBarItemType.Spacer"></appbar-item>
@@ -60,11 +63,11 @@
             </form>
         </div>
         <ul>
-            <li><a data-role='drawer-item' asp-page="/Index"><span class="k-icon k-i-grid "></span>Dashboard</a></li>
-            <li><a data-role='drawer-item' asp-page="/Performance"><span class="k-icon k-i-globe"></span>Performance and Sales</a></li>
-            <li><a data-role='drawer-item' asp-page="/Products"><span class="k-icon k-i-aggregate-fields"></span>Products</a></li>
+            <li data-role='drawer-item'><a asp-page="/Index"><span class="k-icon k-i-grid "></span>Dashboard</a></li>
+            <li data-role='drawer-item'><a asp-page="/Performance"><span class="k-icon k-i-globe"></span>Performance and Sales</a></li>
+            <li data-role='drawer-item'><a asp-page="/Products"><span class="k-icon k-i-aggregate-fields"></span>Products</a></li>
             <li data-role='drawer-separator'></li>
-            <li><a data-role='drawer-item' asp-page="/Settings"><span class="k-icon k-i-gear"></span>Settings</a></li>
+            <li data-role='drawer-item'><a asp-page="/Settings"><span class="k-icon k-i-gear"></span>Settings</a></li>
         </ul>
     </script>
 
@@ -79,6 +82,10 @@
             text-decoration-line: underline;
         }
 
+        #menuIcon {
+            cursor:pointer;
+        }
+
         .title {
             font-size: 18px;
             line-height: 20px;
@@ -91,14 +98,48 @@
             color: #424242;
             cursor: pointer;
         }
+
+        li[data-role='drawer-item'] > a{
+            color: #424242;
+        }
+        li.k-state-selected[data-role='drawer-item'] > a {
+            color: #FFFFFF;
+        }
+        .k-drawer-wrapper {
+            transition: all .3s ease-in-out;
+        }
     </style>
 
     <script>
         $(document).ready(function () {
-            $("#menuIcon").click(function () {
-                $("#drawer").getKendoDrawer().show();
-            })
+            $('a[href="@routeUrl"]').parent().addClass('k-state-selected');
+
+            $('.k-drawer-container').addClass('k-drawer-expanded');
+            $('.k-drawer-wrapper').css('width', '240px');
+            if ($(window).width() < 600) {
+                $("#drawer").getKendoDrawer().hide()
+                $('.k-drawer-container').removeClass('k-drawer-expanded');
+            }
+            //$('.k-drawer-wrapper').css('transition', 'all .3s ease-in-out')
         })
+
+        function toggleDrawer() {
+            var drawerInstance = $("#drawer").getKendoDrawer();
+            var drawerContainer = drawerInstance.drawerContainer;
+            if (drawerContainer.hasClass("k-drawer-expanded")) {
+                drawerInstance.hide();
+                $('.k-drawer-container').removeClass('k-drawer-expanded');
+            } else {
+                drawerInstance.show();
+            }
+            setTimeout(resizeWidgets,400)
+        }
+        function onItemClick(e) {
+            if (!e.item.hasClass("k-drawer-separator")) {
+                var targetPage = e.item.find("a").attr("href");
+                window.location.href = targetPage;
+            }
+        }
     </script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

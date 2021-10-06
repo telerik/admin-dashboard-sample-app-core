@@ -61,7 +61,9 @@
             <labels template="\\#= data.series._groupValue\\#"></labels>
         </chart-legend>
         <category-axis>
-            <category-axis-item categories="daysOfWeek"></category-axis-item>
+            <category-axis-item categories="daysOfWeek">
+            <labels template="\\# if(kendo.support.mobileOS != false){return kendo.toString(kendo.date.dayOfWeek(new Date(),index),'ddd')} else {return value} \\#"></labels>
+            </category-axis-item>
         </category-axis>
         <datasource>
             <transport>
@@ -287,6 +289,11 @@
     </containers>
 </kendo-tilelayout>
 <style>
+    @@media only screen and (max-width: 600px) {
+        .k-tilelayout-item.k-card {
+            grid-column-end: span 6 !important;
+        }
+    }
     .k-card-title {
         font-size: 20px;
         line-height: 24px;
@@ -355,7 +362,7 @@
     }
     function resizeWidgets() {
         var charts = $(".k-chart");
-        charts.each((idx, elem) => $(elem).getKendoChart().resize())
+        charts.each((idx, elem) => $(elem).getKendoChart().resize(true))
     }
 
     $(document).ready(function () {

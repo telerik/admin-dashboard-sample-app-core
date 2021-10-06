@@ -7,7 +7,12 @@
 @{
     ViewData["Title"] = "Overview";
 }
-
+<script>
+    $(".k-tilelayout-item").on("resize", function () {
+        console.log('opaaa')
+        resizeWidgets()
+    })
+</script>
 <div class="k-d-flex-col k-justify-content-center">
     <div class="greeting">
         Hello Again, @userManager.GetUserAsync(User).Result.FullName!
@@ -15,16 +20,16 @@
 
 
     <script id="tasks-ontrack-template" type="text/html">
-        <div style="font-size: 84px; line-height: 101px; color: \\#37B400">22</div>
-        <div class="k-card-title">In Backlog: 43</div>
+        <div style="font-size: 84px; font-weight:300; line-height: 101px; color: \\#37B400">22</div>
+        <div class="k-card-title" style="color: \\#666666">In Backlog: 43</div>
     </script>
     <script id="overdue-tasks-template" type="text/html">
-        <div style="font-size: 84px; line-height: 101px; color: \\#F31700">7</div>
-        <div class="k-card-title">From Yesterday: 16</div>
+        <div style="font-size: 84px; font-weight: 300; line-height: 101px; color: \\#F31700">7</div>
+        <div class="k-card-title" style="color: \\#666666">From Yesterday: 16</div>
     </script>
     <script id="issues-template" type="text/html">
-        <div style="font-size: 84px; line-height: 101px; color: \\#FFC000">47</div>
-        <div class="k-card-title">Closed By Team: 15</div>
+        <div style="font-size: 84px; font-weight: 300; line-height: 101px; color: \\#FFC000">47</div>
+        <div class="k-card-title" style="color: \\#666666">Closed By Team: 15</div>
     </script>
     <script id="used-space-template" type="text/html">
         <div>
@@ -33,7 +38,7 @@
                 </scale>
             </kendo-arcgauge>
         </div>
-        <div class="k-card-title">25 of 50GB Used</div>
+        <div class="k-card-title" style="color: \\#666666">25 of 50GB Used</div>
     </script>
 
     <script id="total-points-header-template" type="text/html">
@@ -237,7 +242,7 @@
     }
 
     function resizeWidgets() {
-        $("#chart").getKendoChart().resize()
+        $("#chart").getKendoChart().resize(true)
         $("#grid").getKendoGrid().resize(true)
     }
 
@@ -248,8 +253,15 @@
             resizeWidgets()
         })
     })
+
 </script>
 <style>
+    @@media only screen and (max-width: 600px) {
+        .k-tilelayout-item.k-card {
+            grid-column-end: span 4 !important;
+        }
+    }
+
     .negativeBudget {
         color: #FF6358;
     }
@@ -277,5 +289,9 @@
         line-height: 37px;
         padding: 16px;
         background: #fafafa;
+    }
+
+    .k-rating-container .k-rating-item {
+        padding: 0;
     }
 </style>

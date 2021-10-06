@@ -15,36 +15,32 @@
         <div class="signin k-justify-content-center">Sign Up</div>
         <div class="register k-d-flex-row k-justify-content-evenly"><span>Already have an account?</span> <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign In</a></div>
     </div>
-    @(Html.Kendo().Form<RegisterModel.InputModel>()
-                .Name("Register")
-                .Validatable(v=> {
-                    v.ValidationSummary(false);
-                    v.ValidateOnBlur(true);
-                })
-                .FormData(Model.Input)
-                .Layout("grid")
-                .Grid(g => g.Cols(1).Gutter(5))
-                .HtmlAttributes(new { method = "POST", style= "width: 100%;" })
-                .Items(items =>
-                {
-                    items.Add()
-                        .Field(f => f.FullName).Label("Full Name");
-                    items.Add()
-                        .Field(f => f.Email)
-                        .Label(l => l.Text("Email"));
-                    items.Add()
-                        .Field(f => f.Password)
-                        .Label(l => l.Text("Password"))
-                        .InputHtmlAttributes(new { @type = "password", autocomplete = "off" });
-                    items.Add()
-                       .Field(f => f.Company)
-                       .Label(l => l.Text("Company"));
-                    items.Add()
-                        .Field(f => f.AgreeToTerms)
-                        .Label(l=>l.Text("<span>I agree to the <a href=\"#\">Terms of Services</a> and <a href=\"#\">Privacy Policy<a/></span>").Encoded(false));
-                })
-                .ButtonsTemplate("<button class='k-button k-primary' style='width:100%'>Create free account</button>")
-            )
+    <kendo-form name="Register"
+                form-data="Model.Input"
+                layout="grid"
+                buttons-template="<button class='k-button k-primary' style='width:100%'>Create Free Account</button>"
+                method="post"
+                style="width:100%">
+        <validatable validate-on-blur="true" validation-summary="false" />
+        <grid cols="1" gutter="5" />
+        <form-items>
+            <form-item field="FullName">
+                <item-label text="Full Name:" />
+            </form-item>
+            <form-item field="Email">
+                <item-label text="Email:" />
+            </form-item>
+            <form-item field="Password" html-attributes='new Dictionary<string, object> { { "type", "password" },{"autocomplete","off" } }'>
+                <item-label text="Password:" />
+            </form-item>
+            <form-item field="Company">
+                <item-label text="Company:" />
+            </form-item>
+            <form-item field="AgreeToTerms">
+                <item-label encoded="false" text='<span>I agree to the <a class="k-link" href="#">Terms of Services</a> and <a class="k-link" href="\\#">Privacy Policy<a/></span>:' />
+            </form-item>
+        </form-items>
+    </kendo-form>
 </div>
 <style>
     .logo-container {
@@ -86,10 +82,3 @@
         padding-left: 0.5em;
     }
 </style>
-<script>
-    $("#Register").append($("<input type='hidden' name='__RequestVerificationToken' value='@token' data-stop='true' />"))
-</script>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

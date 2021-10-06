@@ -12,33 +12,26 @@
         <div class="signin k-justify-content-center">Sign In</div>
         <div class="register k-d-flex-row k-justify-content-evenly"><span>Don't have an account?</span> <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Sign Up</a></div>
     </div>
-    @(Html.Kendo().Form<LoginModel.InputModel>()
-                .Name("Login")
-                 .Validatable(v =>
-                 {
-                     v.ValidationSummary(false);
-                     v.ValidateOnBlur(true);
-                 })
-                .FormData(Model.Input)
-                .Layout("grid")
-                .Grid(g => g.Cols(1).Gutter(5))
-                .HtmlAttributes(new { method = "POST", style= "width: 100%;" })
-                .Items(items =>
-                {
-                    items.Add()
-                        .Field(f => f.Email)
-                        .Label(l => l.Text("Email:"));
-                    items.Add()
-                        .Field(f => f.Password)
-                        .Label(l => l.Text("Password:"))
-                        .InputHtmlAttributes(new { @type = "password", autocomplete = "off" });
-
-                    items.Add()
-                        .Field(f => f.RememberMe)
-                        .Label("Remember me");
-                })
-                .ButtonsTemplate("<button class='k-button k-primary' style='width:100%'>Sign In</button>")
-            )
+    <kendo-form name="Login"
+                form-data="Model.Input"
+                layout="grid"
+                buttons-template="<button class='k-button k-primary' style='width:100%'>Sign In</button>"
+                method="post"
+                style="width:100%">
+        <validatable validate-on-blur="true" validation-summary="false" />
+        <grid cols="1" gutter="5" />
+        <form-items>
+            <form-item field="Email">
+                <item-label text="Email:" />
+            </form-item>
+            <form-item field="Password" html-attributes='new Dictionary<string, object> { { "type", "password" },{"autocomplete","off" } }'>
+                <item-label text="Password:" />
+            </form-item>
+            <form-item field="RememberMe">
+                <item-label text="Remember Me:" />
+            </form-item>
+        </form-items>
+    </kendo-form>
     <div style="padding:10px;" class="k-d-flex-row k-align-items-center k-justify-content-center">
         <span style="flex: none; order: 0; flex-grow: 1; margin: 0px 9px;"></span>
         <span style="border: none; width: 102px; font-size:14px">Or continue with</span>
@@ -95,10 +88,3 @@
         padding-left: 0.5em;
     }
 </style>
-<script>
-     $("#Login").append($("<input type='hidden' name='__RequestVerificationToken' value='@token' data-stop='true' />"))
-</script>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

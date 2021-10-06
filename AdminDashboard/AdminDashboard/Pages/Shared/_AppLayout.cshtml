@@ -1,0 +1,118 @@
+﻿@using AdminDashboard.Data.Models
+@inject UserManager<ApplicationUser> userManager
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    var routeUrl = Url.RouteUrl(ViewContext.RouteData.Values);
+}
+
+<kendo-drawer name="drawer" mode="push" width="240" position="left" template-id="drawerTemplate" auto-collapse="false" on-item-click="onItemClick">
+    <mini enabled="false" />
+    <content>
+        <div>
+            <main role="main">
+                <kendo-appbar name="appbar" theme-color="AppBarThemeColor.Inherit" style="height:48px;">
+                    <items>
+                        <appbar-item type="AppBarItemType.ContentItem" template="<span id='menuIcon' href='\\#' onclick='toggleDrawer()'><span class='k-icon k-i-menu'></span></span>"></appbar-item>
+                        <appbar-item type="AppBarItemType.Spacer" width="16px"></appbar-item>
+                        <appbar-item type="AppBarItemType.ContentItem" template="<div class='title'>@ViewData["Title"]</div>"></appbar-item>
+                        <appbar-item type="AppBarItemType.Spacer"></appbar-item>
+                        <appbar-item type="AppBarItemType.ContentItem" template="<div class='app-bar-link'><span class='k-icon k-i-notification'><span data-role='badge' class='k-badge k-badge-solid k-badge-error k-badge-md k-badge-dot k-badge-outside k-top-end'></span></span></div>"></appbar-item>
+                        <appbar-item type="AppBarItemType.Spacer" width="8px"></appbar-item>
+                        <appbar-item type="AppBarItemType.ContentItem" template="<a href='@Url.Page("About")' class='app-bar-link'>About</a>"></appbar-item>
+                        @{ if ((string)ViewData["Title"] != "Dashboard")
+                            {
+                <appbar-item type="AppBarItemType.ContentItem" template="<div class='app-bar-link'>Contacts</div>"></appbar-item> } }
+                    </items>
+                </kendo-appbar>
+                @RenderBody()
+            </main>
+        </div>
+    </content>
+</kendo-drawer>
+<script id="drawerTemplate" type="text/html">
+    <div class="k-d-flex-col k-align-items-center k-justify-content-evenly" style="height:218px;">
+        <div class="k-avatar k-avatar-circle k-avatar-image k-avatar-lg" id="avatar"><img src='@Url.Content("~/assets/navigation/Avatar.svg")' /></div>
+        <div id="name">@userManager.GetUserAsync(User).Result.FullName</div>
+        <div id="email">@userManager.GetUserAsync(User).Result.Email</div>
+
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+            <button type="submit" class="k-button k-secondary k-state-active">Logout</button>
+        </form>
+    </div>
+    <ul>
+        <li data-role='drawer-item'><a asp-page="/Index"><span class="k-icon k-i-grid "></span>Dashboard</a></li>
+        <li data-role='drawer-item'><a asp-page="/Performance"><span class="k-icon k-i-globe"></span>Performance and Sales</a></li>
+        <li data-role='drawer-item'><a asp-page="/Products"><span class="k-icon k-i-aggregate-fields"></span>Products</a></li>
+        <li data-role='drawer-separator'></li>
+        <li data-role='drawer-item'><a asp-page="/Settings"><span class="k-icon k-i-gear"></span>Settings</a></li>
+    </ul>
+</script>
+
+<style>
+    #name {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    #email {
+        font-size: 12px;
+        text-decoration-line: underline;
+    }
+
+    #menuIcon {
+        cursor: pointer;
+    }
+
+    .title {
+        font-size: 18px;
+        line-height: 20px;
+        color: #2D73F5;
+    }
+
+    .app-bar-link {
+        font-size: 14px;
+        line-height: 20px;
+        color: #424242;
+        cursor: pointer;
+    }
+
+    li[data-role='drawer-item'] > a {
+        color: #424242;
+    }
+
+    li.k-state-selected[data-role='drawer-item'] > a {
+        color: #FFFFFF;
+    }
+
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('a[href="@routeUrl"]').parent().addClass('k-state-selected');
+
+        $('.k-drawer-container').addClass('k-drawer-expanded');
+        $('.k-drawer-wrapper').css('width', '240px');
+        if ($(window).width() < 600) {
+            $("#drawer").getKendoDrawer().hide()
+            $('.k-drawer-container').removeClass('k-drawer-expanded');
+        }
+    })
+
+    function toggleDrawer() {
+        var drawerInstance = $("#drawer").getKendoDrawer();
+        var drawerContainer = drawerInstance.drawerContainer;
+        if (drawerContainer.hasClass("k-drawer-expanded")) {
+            drawerInstance.hide();
+            $('.k-drawer-container').removeClass('k-drawer-expanded');
+        } else {
+            drawerInstance.show();
+        }
+        setTimeout(resizeWidgets,400)
+    }
+    function onItemClick(e) {
+        if (!e.item.hasClass("k-drawer-separator")) {
+            var targetPage = e.item.find("a").attr("href");
+            window.location.href = targetPage;
+        }
+    }
+</script>

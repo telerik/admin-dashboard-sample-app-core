@@ -5,6 +5,7 @@
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @Html.AntiForgeryToken()
 @{
+    Layout = "/Pages/Shared/_AppLayout.cshtml";
     ViewData["Title"] = "Overview";
 }
 <script>

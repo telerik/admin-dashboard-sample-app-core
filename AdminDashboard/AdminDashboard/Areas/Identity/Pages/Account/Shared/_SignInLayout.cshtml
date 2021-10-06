@@ -1,96 +1,72 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-    <title></title>
-
-    @* Add the Kendo UI styles: *@
-    <link href="https://kendo.cdn.telerik.com/2021.3.914/styles/kendo.default-v2.min.css" rel="stylesheet" type="text/css" />
-
-    @* Add the Kendo UI scripts: *@
-    <script src="https://kendo.cdn.telerik.com/2021.3.914/js/jquery.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2021.3.914/js/kendo.all.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2021.3.914/js/kendo.aspnetmvc.min.js"></script>
-</head>
-<body>
-    <main class="k-d-flex-row k-align-items-center k-justify-content-center">
-        <div class="sign-in-layout k-d-flex ">
-            <div class="waves"></div>
-            <div class="signin-container k-d-flex-col k-align-items-center k-justify-content-center">
-                @RenderBody()
-            </div>
-            <div style="width:100%" class="k-d-flex-col k-align-items-center k-justify-content-end">
-                <div class="slogan-container k-d-flex-col k-align-items-center k-justify-content-center">
-                    <div class="title">How Does Telerik UI Cut Development Time?</div>
-                    <div class="subtitle">Telerik UI delivers everything you need to build modern, beautiful, responsive apps.</div>
-                    <div class="kendoka"></div>
-                </div>
+﻿@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+<main class="k-d-flex-row k-align-items-center k-justify-content-center">
+    <div class="sign-in-layout k-d-flex ">
+        <div class="waves"></div>
+        <div class="signin-container k-d-flex-col k-align-items-center k-justify-content-center">
+            @RenderBody()
+        </div>
+        <div style="width:100%" class="k-d-flex-col k-align-items-center k-justify-content-end">
+            <div class="slogan-container k-d-flex-col k-align-items-center k-justify-content-center">
+                <div class="title">How Does Telerik UI Cut Development Time?</div>
+                <div class="subtitle">Telerik UI delivers everything you need to build modern, beautiful, responsive apps.</div>
+                <div class="kendoka"></div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <style>
-        .slogan-container {
-            width: 540px;
-            height: 80%;
-            position: absolute;
-            gap: 30px;
-        }
+<style>
+    .slogan-container {
+        width: 540px;
+        height: 80%;
+        position: absolute;
+        gap: 30px;
+    }
 
-        .sign-in-layout {
-            width: 1440px;
-            height: 900px;
-            /*background: url("../../../../../assets/signin/background.svg");*/
-            background:url(@Url.Content("~/assets/signin/background.svg"));
-            background-repeat: no-repeat;
-        }
+    .sign-in-layout {
+        width: 1440px;
+        height: 900px;
+        background:url(@Url.Content("~/assets/signin/background.svg"));
+        background-repeat: no-repeat;
+    }
 
-        .kendoka {
-            /*background: url("../../../../../assets/signin/kendoka.svg");*/
-            background: url( @Url.Content("~/assets/signin/kendoka.svg") );
-            width: 480px;
-            height: 480px;
-            transform: scale(-1,1);
-        }
+    .kendoka {
+        background: url( @Url.Content("~/assets/signin/kendoka.svg") );
+        width: 480px;
+        height: 480px;
+        transform: scale(-1,1);
+    }
 
-        .title {
-            font-weight: 700;
-            font-size: 48px;
-            line-height: 67px;
-            color: #FFFFFF;
-            text-align: center
-        }
+    .title {
+        font-weight: 700;
+        font-size: 48px;
+        line-height: 67px;
+        color: #FFFFFF;
+        text-align: center
+    }
 
-        .subtitle {
-            font-weight: 400;
-            font-size: 19px;
-            color: #FFFFFF;
-            line-height: 25px;
-            text-align: center;
-        }
+    .subtitle {
+        font-weight: 400;
+        font-size: 19px;
+        color: #FFFFFF;
+        line-height: 25px;
+        text-align: center;
+    }
 
-        .signin-container {
-            background: white;
-            width: 560px;
-            z-index: 1;
-        }
+    .signin-container {
+        background: white;
+        width: 560px;
+        z-index: 1;
+    }
 
-        .waves {
-/*            background: url("../../../../../assets/signin/bgr-image.svg");*/
-            background:url(@Url.Content("~/assets/signin/bgr-image.svg"));
-            width: 100%;
-            height: 390px;
-            align-self: flex-end;
-            position: absolute;
-            background-repeat: no-repeat
-        }
-    </style>
-
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+    .waves {
+        background:url(@Url.Content("~/assets/signin/bgr-image.svg"));
+        width: 100%;
+        height: 390px;
+        align-self: flex-end;
+        position: absolute;
+        background-repeat: no-repeat
+    }
+</style>

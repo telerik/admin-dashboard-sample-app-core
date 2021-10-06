@@ -1,6 +1,7 @@
 ﻿@page
 @model AdminDashboard.Pages.PerformanceModel
 @{
+    Layout = "/Pages/Shared/_AppLayout.cshtml";
     ViewData["Title"] = "Performance & Sales";
     var daysOfWeek = Enum.GetNames(typeof(System.DayOfWeek))
         .Select(x => x.ToString())

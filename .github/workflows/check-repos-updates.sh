@@ -20,3 +20,6 @@ else
     gh pr create --base master --head $BRANCH_NAME --reviewer $reviewers \
     --title "Update dependencies $DATE" --body 'Please review and update dependencies'
 fi
+echo "PRs are:"
+
+echo $PRs

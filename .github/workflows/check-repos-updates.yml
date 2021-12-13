@@ -29,7 +29,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update-dependencies
+          branch: master
           commit-message: Update dependencies commit message
           title: 'Update dependencies title'
           body: >

@@ -15,3 +15,4 @@ else
     GITHUB_TOKEN=$TOKEN \
     gh pr create --base master --head $BRANCH_NAME --reviewer $reviewers \
     --title "Update dependencies $DATE" --body 'Please review and update dependencies'
+fi

@@ -3,6 +3,10 @@ echo "test"
 reviewers="mparvanov"
 BRANCH_NAME="update-dependencies"
 PRs=$(GITHUB_TOKEN=$TOKEN gh pr list | grep "$BRANCH_NAME" || true)
+echo "PRs are:"
+echo $PRs
+echo "Branch is:"
+echo $BRANCH_NAME
 if [ ! -z $PRs ]; then
     echo "Unmerged pr $BRANCH_NAME"
 else

@@ -1,7 +1,6 @@
 name: Check for updates across repos
 
 on:
-  push:
   workflow_dispatch:
 jobs:
   check-repos-updates:

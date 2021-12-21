@@ -41,7 +41,7 @@ else
     git add . && git commit -m "chore: update dependencies"
     git pull
     git push -u origin $BRANCH_NAME
-    gh pr create --base master --head $BRANCH_NAME --reviewer $reviewers \
+    gh pr create --base master --head $BRANCH_NAME \
     --title "Update dependencies $DATE" --body 'Please review and update dependencies'
 fi
 

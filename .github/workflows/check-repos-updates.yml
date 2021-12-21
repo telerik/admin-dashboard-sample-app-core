@@ -3,7 +3,7 @@ name: Check for updates across repos and create pull request
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * 1'
+    - cron: '0 1 * * 4'
 jobs:
   check-repos-updates:
     runs-on: ubuntu-latest

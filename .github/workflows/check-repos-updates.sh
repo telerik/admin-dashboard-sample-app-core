@@ -1,103 +1,47 @@
 #!/usr/bin/env bash
+echo "Stage1 Find Updates"
+LAST_RELEASE=$(curl -s https://api.github.com/repos/telerik/kendo-ui-core/releases | grep tag_name | head -n 1 |  cut -d '"' -f 4)
+echo "Last release version is $LAST_RELEASE"
 
-# set -o errexit
-# config_file="updates-notifications.json"
-# repos=`jq -r '.updates | map(.repository) | join("\n")' $config_file | tr -d '""'`
-
-# function extract_folders {
-#     jq -r ".updates | . [] | select(.repository == \"$1\") |.directories| join(\"\n\")" ../$config_file | tr -d '""'
-# }
-
-# function extract_reviewers {
-#     jq -r ".updates | . [] | select(.repository == \"$1\") |.reviewers| join(\"\n\")" ../$config_file | tr -d '""'
-# }
-
-# function clone_and_process {
-#     if [ ! -d "$repo" ]
-#     then
-#         git clone --depth 1 git@github.com:telerik/$repo
-#     fi
-#     cd $repo
-#     folders=$(extract_folders $repo)
-#     reviewers=$(extract_reviewers $repo)
-#     echo "$reviewers"
-#     for folder in $folders
-#     do
-#       cd ".$folder"
-#       ncu -u --filter /^@progress/
-#       create_pr $repo $reviewers
-#     done
-#     cd ..
-
-# }
-
-# function create_pr {
-#     repo=$1
-#     reviewers=$2
-#     BRANCH_NAME="update-dependencies-$repo"
-#     PRs=$(GITHUB_TOKEN=$TOKEN gh pr list | grep "$BRANCH_NAME" || true)
-#     if [ ! -z $PRs ]; then
-#         echo "Unmerged pr $BRANCH_NAME"
-#     else
-#         git fetch origin
-#         git checkout -b $BRANCH_NAME
-#         git config user.email "kendo-bot@progress.com"
-#         git config user.name "kendo-bot"
-#         git add package.json && git commit -m "chore: update dependencies"
-#         git push -u origin $BRANCH_NAME
-#         GITHUB_TOKEN=$TOKEN \
-#         gh pr create --base master --head $BRANCH_NAME --reviewer $reviewers \
-#         --title "Update dependencies $DATE" --body 'Please review and update dependencies'
-#     fi
-# }
-
-# has_changes=0
-
-# git diff --exit-code --quiet -- . || has_changes=1
-
-# if [ $has_changes -eq 0  ]
-# then
-#     echo -e "${BOLD} No changes ${NC}"
-# else
-#     create_pr
-# fi
-# function cleanup() {
-#     cd $repo
-#     git checkout -- .
-#     git clean -xdf
-#     cd ..
-# }
-
-# function loop_over_repos() {
-#     for item in $repos
-#     do
-#      repo=$item
-#      "$@"
-#    #  cleanup
-#     done
-# }
-
-
-# loop_over_repos clone_and_process
-
-
-function create_pr {
-    reviewers="mparvanov"
-    BRANCH_NAME="update-dependencies"
-    PRs=$(GITHUB_TOKEN=$TOKEN gh pr list | grep "$BRANCH_NAME" || true)
-    if [ ! -z $PRs ]; then
-        echo "Unmerged pr $BRANCH_NAME"
-    else
-        git fetch origin
-        git checkout -b $BRANCH_NAME
-        git config user.email "kendo-bot@progress.com"
-        git config user.name "kendo-bot"
-        git add package.json && git commit -m "chore: update dependencies"
-        git push -u origin $BRANCH_NAME
-        GITHUB_TOKEN=$TOKEN \
-        gh pr create --base master --head $BRANCH_NAME --reviewer $reviewers \
-        --title "Update dependencies $DATE" --body 'Please review and update dependencies'
+IFS="$IFS"
+IFS=$'\n'
+for file in `find . -type f -name "*.cshtml"`  
+do
+    echo "file = $file"
+    ls $file
+    CURRENT_VERSION=$(grep -hnr "kendo.cdn" $file | head -1 |cut -d '/' -f 4)
+    echo "Current release version from $file is $CURRENT_VERSION"
+    #  read line
+    if [ -z "$CURRENT_VERSION" ]
+        then
+        echo "\$var is empty"
+        else
+        sed -i "s/$CURRENT_VERSION/$LAST_RELEASE/g" $file
+              echo "\$var is NOT empty"
     fi
-}
+done
+git diff
 
-create_pr 
+echo "Stage2 Commit the change"
+reviewers="@telerik/kendo-reviewers"
+BRANCH_NAME="update-dependencies"
+PRs=$(gh pr list | grep "$BRANCH_NAME" || true)
+echo "PRs are:"
+echo $PRs
+echo "Branch is:"
+echo $BRANCH_NAME
+if [ ! -z $PRs ]; then
+    echo "Unmerged pr $BRANCH_NAME"
+else
+    git fetch origin
+    git pull
+    git checkout -b $BRANCH_NAME
+    git config user.email "kendo-bot@progress.com"
+    git config user.name "kendo-bot"
+    git add . && git commit -m "chore: update dependencies"
+    git pull
+    git push -u origin $BRANCH_NAME
+    gh pr create --base master --head $BRANCH_NAME --reviewer $reviewers \
+    --title "Update dependencies $DATE" --body 'Please review and update dependencies'
+fi
+

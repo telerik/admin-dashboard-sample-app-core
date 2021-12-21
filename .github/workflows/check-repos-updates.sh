@@ -23,7 +23,8 @@ done
 git diff
 
 echo "Stage2 Commit the change"
-reviewers="qa-reviewers"
+reviewers="Dimitar-Goshev,MilenaCh,mparvanov"
+echo $reviewers
 BRANCH_NAME="update-dependencies"
 PRs=$(gh pr list | grep "$BRANCH_NAME" || true)
 echo "PRs are:"

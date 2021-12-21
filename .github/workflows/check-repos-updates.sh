@@ -23,7 +23,7 @@ done
 git diff
 
 echo "Stage2 Commit the change"
-reviewers="telerik/kendo-qa"
+reviewers="@telerik/kendo-qa"
 BRANCH_NAME="update-dependencies"
 PRs=$(gh pr list | grep "$BRANCH_NAME" || true)
 echo "PRs are:"

@@ -18,7 +18,7 @@
     <kendo-form name="Register"
                 form-data="Model.Input"
                 layout="grid"
-                buttons-template="<button class='k-button-md k-primary' style='width:100%'>Create Free Account</button>"
+                buttons-template="<button class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid-primary' style='width:100%'>Create Free Account</button>"
                 method="post"
                 style="width:100%">
         <validatable validate-on-blur="true" validation-summary="false" />
@@ -37,7 +37,7 @@
                 <item-label text="Company:" />
             </form-item>
             <form-item field="AgreeToTerms">
-                <item-label encoded="false" text='<span>I agree to the <a class="k-link" href="#">Terms of Services</a> and <a class="k-link" href="\\#">Privacy Policy<a/></span>:' />
+                <item-label encoded="false" text='<span>I agree to the <a href="#">Terms of Services</a> and <a href="\\#">Privacy Policy<a/></span>' />
             </form-item>
         </form-items>
     </kendo-form>

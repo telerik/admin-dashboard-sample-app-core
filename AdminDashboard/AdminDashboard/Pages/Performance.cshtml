@@ -308,6 +308,17 @@
     #tilelayout .k-card-header {
         border-style: none;
     }
+    @@media (max-width: 780px) {
+        #tilelayout div.k-tilelayout-item {
+            grid-column-end: span 6 !important;
+        }
+    }
+
+    @@media only screen and (max-width: 600px) {
+        .k-card-body {
+            padding: 16px 0px;
+        }
+    }
 </style>
 
 <script>

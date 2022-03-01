@@ -43,19 +43,27 @@
 
     <script id="total-points-header-template" type="text/html">
         <span class="k-card-title">Sales</span>
-        <span class="k-scheduler-navigation k-button-group"><button class="k-button k-button-solid k-button-md k-button-rectangle k-rounded-md k-button-solid-base k-nav-today" title="Today"><span class="k-button-text">Today</span></button><button class="k-button k-button-solid k-button-md k-button-rectangle k-rounded-md k-button-solid-base k-icon-button k-nav-prev" title="Previous" aria-label="Previous"><span class="k-icon k-i-arrow-60-left"></span></button><button class="k-button k-button-solid k-button-md k-button-rectangle k-rounded-md k-button-solid-base k-icon-button k-nav-next" title="Next" aria-label="Next"><span class="k-icon k-i-arrow-60-right"></span></button></span>
-        <span><span class="k-icon k-i-calendar"></span><span>@DateTime.Now.ToLongDateString()</span></span>
+            <kendo-daterangepicker name="daterangepicker"
+                    labels=false
+                    min="new DateTime(2019, 1, 1)" 
+                    max="new DateTime(2020, 1, 1)" 
+                    format="MM/dd/yyyy" 
+                    on-close="onRangeSelect"
+                    on-change="onRangeChange"
+                    is-in-client-template=true style="display: inline-flex; width: fit-content;">
+                <range start="new DateTime(2019, 1, 1)" end="new DateTime(2020, 1, 1)"/>
+            </kendo-daterangepicker>
         <span class="k-spacer k-toolbar-spacer"></span>
-        <kendo-buttongroup name="total-points-header-options" is-in-client-template="true" style="float:right" on-select="onChartChange">
+        <kendo-buttongroup name="total-points-header-options" index=0 is-in-client-template="true" style="float:right" on-select="onChartChange">
             <buttongroup-items>
-                <item text="Revenue" html-attributes='new Dictionary<string, object>{ ["class"] = "k-primary" }'></item>
+                <item text="Revenue"></item>
                 <item text="Sales Count"></item>
             </buttongroup-items>
         </kendo-buttongroup>
     </script>
 
     <script id="total-points-template" type="text/html">
-        <div style="width:100%;">
+        <div style="height:100%;width:100%;">
             <kendo-chart name="chart" is-in-client-template="true" theme="sass">
                 <chart-legend position="ChartLegendPosition.Bottom" align="ChartLegendAlign.Center">
                     <labels><chart-legend-labels-margin right="200" /></labels>
@@ -103,38 +111,39 @@
     <script id="mk-team-header-template" type="text/html">
         <span class="k-card-title">All Employees</span>
         <span class="k-spacer k-toolbar-spacer"></span>
-        <kendo-buttongroup name="mk-team-header-options" is-in-client-template="true" style="float:right" on-select="buttonGroupSelectHandler">
+        <kendo-buttongroup name="mk-team-header-options" index=0 is-in-client-template="true" style="float:right" on-select="buttonGroupSelectHandler">
             <buttongroup-items>
-                <item text="My Team" html-attributes='new Dictionary<string, object>{ ["class"] = "k-primary" }'></item>
+                <item text="My Team"></item>
                 <item text="All Teams"></item>
             </buttongroup-items>
         </kendo-buttongroup>
     </script>
 
     <script id="mk-team-template" type="text/html">
-        <kendo-grid name="grid" is-in-client-template="true" on-data-bound="onDataBound">
+        <kendo-grid name="grid" is-in-client-template="true" on-data-bound="onDataBound" style="height:100%;">
             <columns>
                 <column selectable="true" width="50"></column>
                 <column title="Employee">
                     <columns>
-                        <column field="FullName"  title="Contact Name" template="<span class='k-avatar k-avatar-circle k-avatar-image k-avatar-sm'><img src='@Url.Content("~/assets/employees/\\#= getId(Id)\\#.jpg")'/></span> \\#=FullName\\#"></column>
+                        <column field="FullName"  title="Contact Name" template="<div class='k-avatar k-avatar-solid-primary k-avatar-solid k-rounded-full k-avatar-md'><span class='k-avatar-image'><img src='@Url.Content("~/assets/employees/\\#= getId(Id)\\#.jpg")'/></span></div>\\#=FullName\\#"></column>
                         <column field="JobTitle"  title="Job title"></column>
                     </columns>
                 </column>
                 <column title="Performance">
                     <columns>
-                        <column field="Rating"  html-attributes='new Dictionary<string, object>{ ["style"] = "text-align:center" }' template="<input id='rating_\\#=Id\\#' class='ratingInGrid' />"></column>
+                        <column field="Rating" html-attributes='new Dictionary<string, object>{ ["style"] = "text-align:center" }' template="<input id='rating_\\#=Id\\#' class='ratingInGrid' />"></column>
                         <column field="Budget" format="{0:c}" template="\\#= getBudgetTemplate(data)\\#"></column>
                     </columns>
                 </column>
             </columns>
             <toolbar>
-                <toolbar-button name="search"></toolbar-button>
                 <toolbar-button name="excel"></toolbar-button>
                 <toolbar-button name="pdf"></toolbar-button>
+                <toolbar-button name="search"></toolbar-button>
             </toolbar>
             <search fields='new string[]{"FullName","JobTitle"}'/>
             <sortable enabled="true" />
+            <scrollable enabled="true" />
             <pageable enabled="true" button-count="5" input="true" />
             <groupable enabled="true" />
             <datasource type="DataSourceTagHelperType.Ajax" page-size="7">
@@ -148,16 +157,16 @@
     <kendo-tilelayout name="dashboard-tilelayout" columns="4" resizable="true" reorderable="true" columns-width="25%" rows-height="230px" on-resize="onTileResize">
         <containers>
             <container body-template-id="tasks-ontrack-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Tasks On Track</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+                <container-header template="<span class=k-card-title>Tasks On Track</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="overdue-tasks-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Overdue Tasks</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+                <container-header template="<span class=k-card-title>Overdue Tasks</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="issues-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Issues</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+                <container-header template="<span class=k-card-title>Issues</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="used-space-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Used Space</span><span style='float:right' class='k-icon k-i-more-vertical'></span>" />
+                <container-header template="<span class=k-card-title>Used Space</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="total-points-template" col-span="4" row-span="2">
                 <container-header template-id="total-points-header-template" />
@@ -168,7 +177,11 @@
         </containers>
     </kendo-tilelayout>
 </div>
-
+<kendo-contextmenu name="context-menu" show-on="click" on-select="onSelect" target="#dashboard-tilelayout" filter=".contextMenuButton" orientation="ContextMenuOrientation.Vertical">
+    <items>
+        <menu-item text="<span class='k-icon k-i-delete'></span> Delete" encoded=false ></menu-item>
+    </items>
+</kendo-contextmenu>
 <script>
     function getTemplate(value) {
         var selectedOption = $('#total-points-header-options').getKendoButtonGroup().current().index();
@@ -240,15 +253,39 @@
     function forgeryToken() {
         return kendo.antiForgeryTokens();
     }
-
-</script>
-<style>
-    @@media only screen and (max-width: 600px) {
-        .k-tilelayout-item.k-card {
-            grid-column-end: span 4 !important;
-        }
+    function onSelect(e) {
+      var item = $(e.target).closest(".k-tilelayout-item");
+      item.hide();
     }
 
+    function onRangeSelect(e){
+        var range = this.range();
+        filterChart(range);
+    }
+    function onRangeChange(e){
+        var range = this.range();
+         
+        if(range.start == null && range.end == null){
+            range.start = new Date(2019,1,1);
+            range.end = new Date(2020,1,1);
+        }
+        filterChart(range);
+    }
+    function filterChart(range){
+        var chart = $("#chart").data("kendoChart");
+        chart.dataSource.filter({
+          logic: "and",
+          filters: [
+            { field: "Date", operator: "gte", value: range.start },
+            { field: "Date", operator: "lte", value: range.end }
+          ]
+        });
+    }
+</script>
+<style>
+    .contextMenuButton{
+        cursor:pointer;
+    }
     .negativeBudget {
         color: #FF6358;
     }

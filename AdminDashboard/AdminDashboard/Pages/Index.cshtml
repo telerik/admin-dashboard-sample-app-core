@@ -43,7 +43,7 @@
 
     <script id="total-points-header-template" type="text/html">
         <span class="k-card-title">Sales</span>
-        <span class="k-scheduler-navigation k-button-group"><button class="k-button k-nav-today" title="Today"><span class="k-button-text">Today</span></button><button class="k-button k-button-icon k-icon-button k-nav-prev" title="Previous" aria-label="Previous"><span class="k-icon k-i-arrow-60-left"></span></button><button class="k-button k-button-icon k-icon-button k-nav-next" title="Next" aria-label="Next"><span class="k-icon k-i-arrow-60-right"></span></button></span>
+        <span class="k-scheduler-navigation k-button-group"><button class="k-button k-button-solid k-button-md k-button-rectangle k-rounded-md k-button-solid-base k-nav-today" title="Today"><span class="k-button-text">Today</span></button><button class="k-button k-button-solid k-button-md k-button-rectangle k-rounded-md k-button-solid-base k-icon-button k-nav-prev" title="Previous" aria-label="Previous"><span class="k-icon k-i-arrow-60-left"></span></button><button class="k-button k-button-solid k-button-md k-button-rectangle k-rounded-md k-button-solid-base k-icon-button k-nav-next" title="Next" aria-label="Next"><span class="k-icon k-i-arrow-60-right"></span></button></span>
         <span><span class="k-icon k-i-calendar"></span><span>@DateTime.Now.ToLongDateString()</span></span>
         <span class="k-spacer k-toolbar-spacer"></span>
         <kendo-buttongroup name="total-points-header-options" is-in-client-template="true" style="float:right" on-select="onChartChange">
@@ -280,5 +280,17 @@
 
     .k-rating-container .k-rating-item {
         padding: 0;
+    }
+    
+    @@media (max-width: 716px) {
+        #dashboard-tilelayout div.k-tilelayout-item:nth-child(-n + 4) {
+            grid-column-end: span 4 !important;
+        }
+    }
+
+    @@media (min-width: 717px) and (max-width: 1065px) {
+        #dashboard-tilelayout div.k-tilelayout-item:nth-child(-n + 4) {
+            grid-column-end: span 2 !important;
+        }
     }
 </style>

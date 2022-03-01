@@ -12,7 +12,7 @@
             <main role="main">
                 <kendo-appbar name="appbar" theme-color="AppBarThemeColor.Inherit" style="height:48px;">
                     <items>
-                        <appbar-item type="AppBarItemType.ContentItem" template="<span id='menuIcon' href='\\#' onclick='toggleDrawer()'><span class='k-icon k-i-menu'></span></span>"></appbar-item>
+                        <appbar-item type="AppBarItemType.ContentItem" template="<a id='menuIcon' href='\\#' class='k-button k-button-md k-button-rectangle k-rounded-md k-button-flat' onclick='toggleDrawer()'><span class='k-icon k-i-menu'></span></a>"></appbar-item>
                         <appbar-item type="AppBarItemType.Spacer" width="16px"></appbar-item>
                         <appbar-item type="AppBarItemType.ContentItem" template="<div class='title'>@ViewData["Title"]</div>"></appbar-item>
                         <appbar-item type="AppBarItemType.Spacer"></appbar-item>
@@ -36,7 +36,7 @@
         <div id="email">@userManager.GetUserAsync(User).Result.Email</div>
 
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-            <button type="submit" class="k-button-md k-secondary k-state-active">Logout</button>
+            <button type="submit" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid-base">Sign Out</button>
         </form>
     </div>
     <ul>

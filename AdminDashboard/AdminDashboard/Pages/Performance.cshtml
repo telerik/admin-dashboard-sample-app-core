@@ -267,34 +267,40 @@
 <kendo-tilelayout name="tilelayout" columns="6" resizable="true" reorderable="true" columns-width="16%" rows-height="380px" on-resize="onTileResize">
     <containers>
         <container body-template-id="sales-revenue-template" col-span="6" row-span="1">
-            <container-header template='<div class="k-card-title">Sales Revenue</div>' />
+            <container-header template="<span class=k-card-title>Sales Revenue</span>" />
         </container>
         <container body-template-id="performance-template" col-span="4" row-span="1">
-            <container-header template='<div class="k-card-title">Weekday Payment Preferences</div>' />
+            <container-header template="<span class=k-card-title>Weekday Payment Preferences</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
         </container>
         <container body-template-id="monthly-sales-template" col-span="2" row-span="1">
-            <container-header template='<div class="k-card-title">Monthly Sales<span style="float:right" class="k-icon k-i-more-vertical"></span></div>' />
+            <container-header template="<span class=k-card-title>Monthly Sales</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
         </container>
         <container body-template-id="europe-template" col-span="3" row-span="1">
-            <container-header template='<div class="k-card-title">Top 5 Countries <span class="k-state-disabled" style="float:right;">Europe</span></div>' />
+            <container-header template="<div class='k-card-title'>Top 5 Countries <span style='float:right;''><span class='k-state-disabled' style='margin-right:10px'>Europe</span></span></div>" />
         </container>
         <container body-template-id="global-template" col-span="3" row-span="1">
-            <container-header template='<div class="k-card-title">Top 5 Countries <span class="k-state-disabled" style="float:right;">Global</span></div>' />
+            <container-header template="<div class='k-card-title'>Top 5 Countries <span style='float:right;''><span class='k-state-disabled' style='margin-right:10px'>Global</span></span></div>" />
         </container>
         <container body-template-id="weekly-sales-template" col-span="2" row-span="1">
-            <container-header template='<div class="k-card-title">Weekly Sales<span style="float:right" class="k-icon k-i-more-vertical"></span></div>' />
+            <container-header template="<span class=k-card-title>Weekly Sales</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
         </container>
         <container body-template-id="cost-template" body-template="" col-span="4" row-span="1">
-            <container-header template='<div class="k-card-title">Cost Breakdown<span style="float:right" class="k-icon k-i-more-vertical"></span></div>' />
+            <container-header template="<span class=k-card-title>Cost Breakdown</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
         </container>
     </containers>
 </kendo-tilelayout>
+
+<kendo-contextmenu name="context-menu" show-on="click" on-select="onSelect" target="#tilelayout" filter=".contextMenuButton" orientation="ContextMenuOrientation.Vertical">
+    <items>
+        <menu-item text="<span class='k-icon k-i-delete'></span> Delete" encoded=false ></menu-item>
+    </items>
+</kendo-contextmenu>
+
 <style>
-    @@media only screen and (max-width: 600px) {
-        .k-tilelayout-item.k-card {
-            grid-column-end: span 6 !important;
-        }
+    .contextMenuButton{
+        cursor:pointer;
     }
+
     .k-card-title {
         font-size: 20px;
         line-height: 24px;
@@ -317,6 +323,10 @@
     @@media only screen and (max-width: 600px) {
         .k-card-body {
             padding: 16px 0px;
+        }
+
+        .k-tilelayout-item.k-card {
+            grid-column-end: span 6 !important;
         }
     }
 </style>
@@ -375,5 +385,10 @@
 
     function forgeryToken() {
         return kendo.antiForgeryTokens();
+    }
+
+    function onSelect(e) {
+      var item = $(e.target).closest(".k-tilelayout-item");
+      item.hide();
     }
 </script>

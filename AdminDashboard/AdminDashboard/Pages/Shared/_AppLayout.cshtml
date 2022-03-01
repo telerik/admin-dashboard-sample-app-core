@@ -19,9 +19,6 @@
                         <appbar-item type="AppBarItemType.ContentItem" template="<div class='app-bar-link'><span class='k-icon k-i-notification'><span data-role='badge' class='k-badge k-badge-solid k-badge-error k-badge-md k-badge-dot k-badge-outside k-top-end'></span></span></div>"></appbar-item>
                         <appbar-item type="AppBarItemType.Spacer" width="8px"></appbar-item>
                         <appbar-item type="AppBarItemType.ContentItem" template="<a href='@Url.Page("About")' class='app-bar-link'>About</a>"></appbar-item>
-                        @{ if ((string)ViewData["Title"] != "Dashboard")
-                            {
-                <appbar-item type="AppBarItemType.ContentItem" template="<div class='app-bar-link'>Contacts</div>"></appbar-item> } }
                     </items>
                 </kendo-appbar>
                 @RenderBody()
@@ -29,6 +26,18 @@
         </div>
     </content>
 </kendo-drawer>
+
+<kendo-popover for="#appbar" 
+    filter=".k-i-notification" 
+    show-on="click" 
+    width="400" 
+    height="392" 
+    position="bottom"
+    header-handler="headerHandler"
+    body-handler="bodyHandler"
+    on-show="onPopOverShow"
+    >
+</kendo-popover>
 <script id="drawerTemplate" type="text/html">
     <div class="k-d-flex-col k-align-items-center k-justify-content-evenly" style="height:218px;">
         <div class="k-avatar k-avatar-circle k-avatar-image k-avatar-lg" id="avatar"><img src='@Url.Content("~/assets/navigation/Avatar.svg")' /></div>
@@ -36,7 +45,7 @@
         <div id="email">@userManager.GetUserAsync(User).Result.Email</div>
 
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-            <button type="submit" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid-base">Sign Out</button>
+            <button type="submit" class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base">Sign Out</button>
         </form>
     </div>
     <ul>
@@ -47,6 +56,41 @@
         <li data-role='drawer-item'><a asp-page="/Settings"><span class="k-icon k-i-gear"></span>Settings</a></li>
     </ul>
 </script>
+<img src='@Url.Content("~/assets/employees/\\#= getId(Id)\\#.jpg")'/>
+<script id="notification-body" type="text/x-kendo-template">
+        <div class="notification-item" style="padding: 18px 16px 13px 16px; border-bottom: 1px solid rgba(0,0,0,.08);">
+            <span class="badge-missed" style="margin-right:8px;"></span>
+            <div class='k-avatar k-avatar-solid-primary k-avatar-solid k-rounded-full k-avatar-lg'><span class='k-avatar-image'><img src='@Url.Content("~/assets/employees/9.jpg")'/></span></div>
+            <div class="customer-name">
+                <div style="font-size: 18px">Rudolf joined the Team</div>
+                <div style="font-size: 14px; color: \#8F8F8F">Congratulate her</div>
+            </div>
+        </div>
+        <div class="notification-item" style="padding: 13px 16px 13px 16px; border-bottom: 1px solid rgba(0,0,0,.08);">
+            <span class="badge-missed" style="margin-right:8px;"></span>
+            <div class='k-avatar k-avatar-solid-primary k-avatar-solid k-rounded-full k-avatar-lg'><span class='k-avatar-image'><img src='@Url.Content("~/assets/employees/4.jpg")'/></span></div>
+            <div class="customer-name">
+                <div style="font-size: 18px">Joy invited you to the class</div>
+                <div style="font-size: 14px; color: \#8F8F8F">You have 3 more messages from Joy</div>
+            </div>
+        </div>
+        <div class="notification-item" style="padding: 13px 16px 13px 16px; background-color: rgba(66, 66, 66, 0.04); border-bottom: 1px solid rgba(0,0,0,.08);">
+            <div class='k-avatar k-avatar-solid-info k-avatar-solid k-rounded-full k-avatar-lg'><span class='k-avatar-text'><span></span>MD</span></div>
+            <div class="customer-name">
+                <div style="font-size: 18px">Your order has been shipped</div>
+                <div style="font-size: 14px; color: \#8F8F8F">MD Inc. order update</div>
+            </div>
+        </div>
+        <button id="mark-as-read" style="margin: 15px 15px 0px 0px; background-color: \#FFFFFF; border-color: \#FF6358; color:\#FF6358; width: 165px; float: right;">Mark all as read</button>
+</script>
+
+<script id="notification-header" type="text/x-kendo-template">
+    <div class="k-hstack">
+        <div style="font-size: 19px">Notifications</div>
+        <div class="k-spacer"></div>
+        <div id="new-count">2 New</div>
+    </div>
+    </script>
 
 <style>
     #name {
@@ -74,6 +118,7 @@
         line-height: 20px;
         color: #424242;
         cursor: pointer;
+        text-decoration:none;
     }
 
     li[data-role='drawer-item'] > a {
@@ -83,7 +128,23 @@
     li.k-state-selected[data-role='drawer-item'] > a {
         color: #FFFFFF;
     }
+    .k-drawer-item > a {
+        text-decoration: none;
+    }
+     
+    .k-popover-callout {
+            display: none;
+    }
 
+    .k-popover-body {
+        padding: 0px;
+    }
+
+    .customer-name {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 3 px;
+    }
 </style>
 
 <script>
@@ -137,5 +198,37 @@
         if (grid) {
             grid.each((idx, elem) => $(elem).getKendoGrid().resize(true))
         }
+    }
+
+    function headerHandler(e){
+        var template = kendo.template($("#notification-header").html())
+        var result = template({});
+        return result;
+    }
+    function bodyHandler(e){
+        var template = kendo.template($("#notification-body").html())
+        var result = template({});
+        return result;
+    }
+    function onPopOverShow(e){
+        $("#new-count").kendoBadge({
+            themeColor: "warning",
+            shape: "rectangle"
+        });
+
+        $('.badge-missed').kendoBadge({
+            themeColor: 'warning',
+            shape: 'circle',
+            size: 'small'
+        });
+
+        $("#mark-as-read").kendoButton({
+            click: function () {
+                $(".k-badge-dot").remove();
+                $('.badge-missed').remove();
+                $("#new-count").text("0 New");
+                $(".notification-item").css("background-color", "rgba(66, 66, 66, 0.04)")
+            }
+        });
     }
 </script>

@@ -15,7 +15,7 @@
     <kendo-form name="Login"
                 form-data="Model.Input"
                 layout="grid"
-                buttons-template="<button class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid-primary' style='width:100%'>Sign In</button>"
+                buttons-template="<button class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-primary' style='width:100%'>Sign In</button>"
                 method="post"
                 style="width:100%">
         <validatable validate-on-blur="true" validation-summary="false" />
@@ -43,6 +43,21 @@
         <kendo-button name="reddit" icon="reddit" class="k-flat k-secondary k-state-hover"></kendo-button>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $("#Password").parent().append("<span class='k-icon k-i-preview'></span>");
+        $(".k-i-preview").mousedown(function(){
+
+            $("#Password").attr("type", "text");
+        })
+        $(".k-i-preview").mouseup(function(){
+
+            $("#Password").attr("type", "password");
+        })           
+    })
+</script>
+
 <style>
     .form-container {
         width: 270px;
@@ -86,5 +101,14 @@
     #RememberMe-form-label {
         order: 1;
         padding-left: 0.5em;
+    }
+    .k-icon.k-i-preview {
+        z-index: 10;
+        position: absolute;
+        bottom: 2px;
+        right: 5px;
+        width: 24px;
+        height: 24px;
+        color:gray;
     }
 </style>

@@ -18,7 +18,7 @@
     <kendo-form name="Register"
                 form-data="Model.Input"
                 layout="grid"
-                buttons-template="<button class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid-primary' style='width:100%'>Create Free Account</button>"
+                buttons-template="<button class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-primary' style='width:100%'>Create Free Account</button>"
                 method="post"
                 style="width:100%">
         <validatable validate-on-blur="true" validation-summary="false" />
@@ -37,11 +37,24 @@
                 <item-label text="Company:" />
             </form-item>
             <form-item field="AgreeToTerms">
-                <item-label encoded="false" text='<span>I agree to the <a href="#">Terms of Services</a> and <a href="\\#">Privacy Policy<a/></span>' />
+                <item-label encoded="false" text='<span>I agree to the <a href="#">Terms of Services</a> and <a href="\\#">Privacy Policy<a/>:</span>' />
             </form-item>
         </form-items>
     </kendo-form>
 </div>
+<script>
+    $(document).ready(function(){
+        $("#Password").parent().append("<span class='k-icon k-i-preview'></span>");
+        $(".k-i-preview").mousedown(function(){
+
+            $("#Password").attr("type", "text");
+        })
+        $(".k-i-preview").mouseup(function(){
+
+            $("#Password").attr("type", "password");
+        })           
+    })
+</script>
 <style>
     .logo-container {
         gap: 32px;
@@ -80,5 +93,14 @@
     #AgreeToTerms-form-label {
         order: 1;
         padding-left: 0.5em;
+    }
+    .k-icon.k-i-preview {
+        z-index: 10;
+        position: absolute;
+        bottom: 2px;
+        right: 5px;
+        width: 24px;
+        height: 24px;
+        color:gray;
     }
 </style>

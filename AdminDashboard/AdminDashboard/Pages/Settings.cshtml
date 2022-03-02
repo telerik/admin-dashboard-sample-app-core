@@ -4,86 +4,282 @@
     Layout = "/Pages/Shared/_AppLayout.cshtml";
     ViewData["Title"] = "Settings";
 }
-<script id="info-template" type="text/html">
-    <div class="k-d-flex-col">
-        <div class="k-align-items-start">
-            <kendo-button name="account-button" icon="user" class="k-primary k-flat k-state-selected" is-in-client-template="true">Account</kendo-button>
-            <kendo-button name="security-button" icon="lock" class="k-secondary k-flat" is-in-client-template="true">Security</kendo-button>
-            <kendo-button name="billing-button" icon="file-txt" class="k-secondary k-flat" is-in-client-template="true">Billing</kendo-button>
-            <kendo-button name="notification-button" icon="notification" class="k-secondary k-flat" is-in-client-template="true">Notifications</kendo-button>
-            <div class="k-separator">&nbsp;</div>
-        </div>
-        <div class="k-d-flex-row k-justify-content-around">
-            <div class="k-icon k-i-user" style="font-size:2em;"></div>
-            @(Html.Kendo().Form<SettingsModel.UserDetailsModel>().Name("UserDetailsForm")
-                    .Layout("grid")
-                    .FormData(Model.UserDetails)
-                    .Validatable(v =>
-                        {
-                            v.ValidateOnBlur(false);
-                            v.ValidationSummary(vs => vs.Enable(false));
-                        })
-                    .HtmlAttributes(new { method = "POST", style = "width: 90%;" })
-                    .Grid(g => g.Cols(2).Gutter(20))
-                    .Items(items => {
-                        items.Add().Field(f => f.Username).Label("Username");
-                        items.Add().Field(f => f.Email).Label("Email Address");
-                        items.Add().Field(f => f.Nickname).Label("Nickname");
-                        items.Add().Field(f => f.Phone).Label("Phone Number")
-                            .Editor(e=>e.MaskedTextBox().Mask("(+9) 0000-000-00-00"));
-                    })
-                    .ButtonsTemplate(" ")
-                    .ToClientTemplate()
-                )
-        </div>
-        <div class="k-d-flex-row k-justify-content-around">
-            <div class="k-icon k-i-information" style="font-size:2em;"></div>
-            @(Html.Kendo().Form<SettingsModel.UserInformationModel>().Name("UserInformationForm")
-                    .Layout("grid")
-                    .FormData(Model.UserInformation)
-                    .Validatable(v =>
-                        {
-                            v.ValidateOnBlur(false);
-                            v.ValidationSummary(vs => vs.Enable(false));
-                        })
-                    .HtmlAttributes(new { method = "POST", style = "width: 90%;" })
-                    .Grid(g => g.Cols(2).Gutter(20))
-                    .Items(items => {
-                        items.Add().Field(f => f.BirthDate).Editor(e=>e.DateInput().Format("{0:MM|dd|yy}")).Label("Birth Date");
-                        items.Add().Field(f => f.Country).Label("Country").Editor(e=>e.DropDownList()
-                              .DataTextField("Text")
-                              .DataValueField("Value")
-                              .BindTo(new List<SelectListItem>() {
-                                  new SelectListItem() {
-                                      Text = "USA",
-                                      Value = "1"
-                                  },
-                                  new SelectListItem() {
-                                      Text = "United Kingdom",
-                                      Value = "2"
-                                  },
-                                  new SelectListItem() {
-                                      Text = "Bulgaria",
-                                      Value = "3"
-                                  }
-                              })
-                        );
-                        items.Add().Field(f => f.Website).Label("Website");
-                        items.Add().Field(f => f.WorkPhone).Label("Phone Number")
-                            .Editor(e=>e.MaskedTextBox().Mask("(+9) 0000-000-00-00"));
-                    })
-                    .ButtonsTemplateId("formButtons")
-                    .ToClientTemplate()
-                )
-        </div>
-    </div>
-</script>
 
-<script id="formButtons" type="text/html">
-    <div>
-        <input data-role="switch" data-checked="true"/> Public Profile
+<script id="info-template" type="text/html">
+    <kendo-tabstrip name="tabstrip" on-select="onTabSelect" is-in-client-template=true>
+        <popup-animation enabled=false>
+            </popup-animation>
+        <items>
+            <tabstrip-item text='<button class="k-selected k-button k-button-md k-button-rectangle k-rounded-null k-button-flat k-button-flat-primary"><span class="k-icon k-i-user k-button-icon"></span><span class="k-button-text">Account</span></button>' selected="true" encoded=false>
+                <content>
+                <div id="account">
+                        <div class="k-d-flex-col">
+                    <div style="margin-bottom: 16px;">
+                            <div class="formTitle">USERNAME</div>
+                            <kendo-form name="UserDetailsForm" 
+                                    form-data="@Model.UserDetails" 
+                                    layout="grid" 
+                                    buttons-template=" " 
+                                    method="POST" 
+                                    class="settingsForm"
+                                    on-change="onChange"
+                                    is-in-client-template=true>
+                                <validatable validate-on-blur="false" validation-summary="false" />
+                                <grid cols="2" gutter="20" />
+                                <form-items>
+                                    <form-item field="Username">
+                                        <item-label text="Username" />
+                                    </form-item>
+                                    <form-item field="Email">
+                                        <item-label text="Email Address" />
+                                    </form-item>
+                                    <form-item field="Nickname">
+                                        <item-label text="Nickname" />
+                                    </form-item>
+                                    <form-item field="Phone">
+                                        <item-label text="Phone Number" />
+                                        <maskedtextbox-editor mask="(+9) 0000-000-00-00"></maskedtextbox-editor>
+                                    </form-item>
+                                </form-items>
+                            </kendo-form>
+                    </div>
+           
+                    <div style="margin-bottom: 16px;">
+                        <div class="formTitle">INFORMATION</div>
+                        <kendo-form name="UserInformationForm" 
+                                form-data="@Model.UserInformation" 
+                                layout="grid" 
+                                buttons-template=" " 
+                                method="POST" 
+                                class="settingsForm"
+                                on-change="onChange"
+                                is-in-client-template=true>
+                            <validatable validate-on-blur="false" validation-summary="false" />
+                            <grid cols="2" gutter="20" />
+                            <form-items>
+                                <form-item field="BirthDate">
+                                    <item-label text="BirthDate" />
+                                    <datepicker-editor date-input="true" format="{0:MM|dd|yy}" />
+                                </form-item>
+                                <form-item field="Country">
+                                    <item-label text="Country" />
+                                    <dropdownlist-editor datatextfield="Text" datavaluefield="Value" bind-to="Model.CountryOptions"></dropdownlist-editor>
+                                </form-item>
+                                <form-item field="Website">
+                                    <item-label text="Website" />
+                                </form-item>
+                                <form-item field="WorkPhone">
+                                    <item-label text="Phone Number" />
+                                    <maskedtextbox-editor mask="(+9) 0000-000-00-00"></maskedtextbox-editor>
+                                </form-item>
+                            </form-items>
+                        </kendo-form>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <div class="formTitle">SECURITY</div>
+                        <kendo-form name="SecurityForm" 
+                                form-data="@Model.UserSecurityDetails" 
+                                layout="grid" 
+                                buttons-template=" " 
+                                orientation="horizontal"
+                                method="POST" 
+                                class="settingsForm"
+                                on-change="onChange"
+                                is-in-client-template=true>
+                            <validatable validate-on-blur="false" validation-summary="false" />
+                            <grid cols="1" gutter="20" />
+                            <form-items>
+                                <form-item field="CurrentPassword" html-attributes='new Dictionary<string, object> { { "type", "password" } }' hint="You can only change your password once within 48 hours." >
+                                    <item-label text="Current Password" />
+                                </form-item>
+                                <form-item field="NewPassword" html-attributes='new Dictionary<string, object> { { "type", "password" } }' hint="Password must contain an uppercase character, lowercase character, a digit, and a non-alphanumeric character and be at least six characters long.">
+                                    <item-label text="New Password" />
+                                </form-item>
+                                <form-item field="Enable2FA">
+                                    <item-label text="Enable 2-step authentication" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                                <form-item field="RequestChange">
+                                    <item-label text="Ask to change password on every 6 months" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                            </form-items>
+                        </kendo-form>
+                    </div>
+                    </div>
+                </div>
+                </content>
+            </tabstrip-item>
+            <tabstrip-item text='<button class="k-button k-button-md k-button-rectangle k-rounded-null k-button-flat k-button-flat-primary"><span class="k-icon k-i-file-txt k-button-icon"></span><span class="k-button-text">Billing</span></button>' encoded=false>
+                <content>
+                    <div id="billing">
+                          <div class="formTitle">CHANGE YOUR PLAN</div>
+                              <div id="cards-container">
+                                <div class="k-card k-card-type-rich selected" onclick="selectCard(event)" data-title="Suitable for exploring the product">
+                                    <div class="k-card-header plan-card">
+                                        <h5 class="k-card-title plan-title">Starter</h5>
+                                        <span class="template-menu">
+                                            <div class="k-card-header-actions">
+                                                <button class="k-button k-button-md k-button-rectangle k-rounded-md k-button-flat k-button-flat-base k-taskboard-card-menu-button k-button-icon">
+                                                    <span class="k-icon k-i-more-vertical"></span>
+                                                </button>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="k-card-body body-label">
+                                        Free
+                                    </div>
+                                    <div class="k-card-footer plan-footer">STARTER  PLAN FOR INDIVIDUALS</div>
+                                </div>
+
+                                <div class="k-card k-card-type-rich" onclick="selectCard(event)" data-title="Great options for small teams">
+                                  <div class="k-card-header plan-card">
+                                      <h5 class="k-card-title plan-title">Team</h5>
+                                      <span class="template-menu">
+                                          <div class="k-card-header-actions menu">
+                                              <button class="k-button k-button-md k-button-rectangle k-rounded-md k-button-flat k-button-flat-base k-taskboard-card-menu-button k-button-icon">
+                                                  <span class="k-icon k-i-more-vertical"></span>
+                                              </button>
+                                          </div>
+                                      </span>
+                                  </div>
+                                  <div class="k-card-body body-label">$20/Month</div>
+                                  <div class="k-card-footer plan-footer">COLLABORATE UP TO 16 PEOPLE</div>
+                                </div>
+                                <div class="k-card k-card-type-rich" onclick="selectCard(event)" data-title="Special discount available for higher number of accounts">
+                                  <div class="k-card-header plan-card">
+                                      <h5 class="k-card-title plan-title">Enterprise</h5>
+                                      <span class="template-menu">
+                                          <div class="k-card-header-actions">
+                                              <button class="k-button k-button-md k-button-rectangle k-rounded-md k-button-flat k-button-flat-base k-taskboard-card-menu-button k-button-icon">
+                                                  <span class="k-icon k-i-more-vertical"></span>
+                                              </button>
+                                          </div>
+                                      </span>
+                                  </div>
+                                  <div class="k-card-body body-label">$45/Month</div>
+                                  <div class="k-card-footer plan-footer">FOR BIGGER BUSINESSES</div>
+                                </div>
+                              </div>
+                              <div class="formTitle">PAYMENT DETAILS</div>
+                              <kendo-form name="paymentDetailsForm" 
+                                    form-data="@Model.PaymentDetails" 
+                                    layout="grid" 
+                                    buttons-template=" " 
+                                    method="POST" 
+                                    class="settingsForm"
+                                    on-change="onChange"
+                                    is-in-client-template=true>
+                                <validatable validate-on-blur="true" validation-summary="false" />
+                                <grid cols="7" gutter="20" />
+                                <form-items>
+                                    <form-item field="CardHolder" col-span=7>
+                                        <item-label text="Card Holder" />
+                                    </form-item>
+                                    <form-item field="CardNumber" col-span=4>
+                                        <item-label text="Card Number" />
+                                        <maskedtextbox-editor mask="0000-0000-0000-0000" ></maskedtextbox-editor>
+                                    </form-item>
+                                    <form-item field="ExpirationDate" col-span=2>
+                                        <item-label text="Expiration Date" />
+                                        <dateinput-editor format="MM/yyyy">
+                                            <kendo-date-input-messages-settings  year="YYYY" month="MM" day="dd"/>
+                                        </dateinput-editor>
+                                    </form-item>
+                                    <form-item field="CVCNumber" col-span=1>
+                                        <item-label text="CVC" />
+                                        <maskedtextbox-editor mask="000"></maskedtextbox-editor>
+                                    </form-item>
+                                    <form-item field="CardHolderCountry" col-span=4>
+                                        <item-label text="Country" />
+                                        <dropdownlist-editor datatextfield="Text" datavaluefield="Value" bind-to="Model.CountryOptions"></dropdownlist-editor>
+                                    </form-item>
+                                    <form-item field="ZipCode" col-span=3>
+                                        <item-label text="Zip / Postal Code" />
+                                        <maskedtextbox-editor mask="00000"></maskedtextbox-editor>
+                                    </form-item>
+                                </form-items>
+                              </kendo-form>                             
+                    </div>
+                </content>
+            </tabstrip-item>
+            <tabstrip-item text='<button class="k-button k-button-md k-button-rectangle k-rounded-null k-button-flat k-button-flat-primary"><span class="k-icon k-i-notification k-button-icon"></span><span class="k-button-text">Notifications</span></button>' encoded=false>
+                <content>
+                    <div id="notifications">
+                        <div style="float: right; margin-right: 15px;"><span>Toggle all notifications</span>
+                            <kendo-switch name="toggleAll" checked="true" on-change="toggleAllChange" is-in-client-template=true style="margin-left: 8px;"></kendo-switch>
+                        </div>
+                        <div class="formTitle" style="margin-top: 30px;">ALERTS</div>
+                        <kendo-form name="alertsForm" 
+                                form-data="@Model.NotificationAlerts"
+                                layout="grid"
+                                buttons-template=" " 
+                                method="POST" 
+                                class="settingsForm"
+                                on-change="onChange"
+                                orientation="horizontal"
+                                is-in-client-template=true>
+                            <validatable validate-on-blur="true" validation-summary="false" />
+                            <grid cols="1" gutter="20" />
+                            <form-items>
+                                <form-item field="Communication">
+                                    <item-label encoded=false text="<div>Communication</div><div class='alertSubLabel'>Get news, announcements and product updates.</div>" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                                <form-item field="Security">
+                                    <item-label encoded=false text="<div>Security</div><div class='alertSubLabel'>Get important notifications about your account security.</div>" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                                <form-item field="Meetups">
+                                    <item-label encoded=false text="<div>Meetups</div><div class='alertSubLabel'>Get an email when a Meetup is posted close to my location.</div>" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                            </form-items>
+                        </kendo-form>                   
+
+                        <div class="formTitle">EMAILS</div>
+                        <kendo-form name="emailsForm" 
+                                form-data="@Model.NotificationEmails"
+                                layout="grid"
+                                buttons-template=" " 
+                                method="POST" 
+                                class="settingsForm"
+                                on-change="onChange"
+                                orientation="horizontal"
+                                is-in-client-template=true>
+                            <validatable validate-on-blur="true" validation-summary="false" />
+                            <grid cols="1" gutter="20" />
+                            <form-items>
+                                <form-item field="Photos">
+                                    <item-label text="Photo comments" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                                <form-item field="Mentions">
+                                    <item-label encoded=false text="Mention on a comment" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                                <form-item field="ReplyToGroup">
+                                    <item-label encoded=false text="Reply to my group" />
+                                    <switch-editor></switch-editor>
+                                </form-item>
+                            </form-items>
+                            </kendo-form>                   
+                        </div>
+                </content>
+            </tabstrip-item>
+        </items>
+    </kendo-tabstrip>
+    <div class="k-hstack" style="padding: 0px 16px;">
+        <div id=profileSwitch> Public Profile
+            <kendo-switch name=publicProfile on-change="onChange" checked=true is-in-client-template=true></kendo-switch>
+        </div>
+        <div class="k-spacer"></div>
+        <div style="float: right;">
+            <kendo-button name="cancelButton" on-click="onCancelClick" fill-mode=ButtonFillMode.Flat shape=ComponentShape.Rectangle enable=false is-in-client-template=true>Cancel</kendo-button>
+            <kendo-button name="save" on-click="onSaveClick" fill-mode=ButtonFillMode.Solid theme-color=ThemeColor.Primary shape=ComponentShape.Rectangle enable=false is-in-client-template=true type="submit" >Save Changes</kendo-button>
+        </div>
     </div>
-    <button class="k-button k-primary k-form-submit k-state-disabled" type="submit">Save Changes</button>
 </script>
 
 <script id="date-template" type="text/html">
@@ -122,7 +318,7 @@
     </div>
 </script>
 
-<kendo-tilelayout name="settings" columns="3" resizable="true" reorderable="true" columns-width="380px" rows-height="400px">
+<kendo-tilelayout name="settings" columns="3" resizable="true" reorderable="true" columns-width="33%" rows-height="auto">
     <containers>
         <container body-template-id="info-template" col-span="2" row-span="2">
         </container>
@@ -134,6 +330,125 @@
         </container>
     </containers>
 </kendo-tilelayout>
+
+<kendo-contextmenu name="plan-cards-menu" on-select="onCardDetailSelect" target="#billing" filter=".template-menu" orientation="ContextMenuOrientation.Vertical">
+    <items>
+        <menu-item text="<span class='k-icon k-i-file-txt'></span> Get Details" encoded=false ></menu-item>
+    </items>
+</kendo-contextmenu>
+
+<kendo-dialog name="dialog" visible=false title="Success">
+    <content>
+        Updates submitted successfully!
+    </content>
+</kendo-dialog>
+
+<kendo-dialog name="detailsDialog" visible=false title="Plan Details">
+</kendo-dialog>
+
+<script>
+     (function ($, kendo) {
+        $.extend(true, kendo.ui.validator, {
+            rules: {               
+                validmaskNumber: function (input) {
+                    if (input.is("[name='CardNumber']") && input.val() != "") {
+                        var maskedtextbox = input.data("kendoMaskedTextBox");
+                        return maskedtextbox.value().indexOf(maskedtextbox.options.promptChar) === -1;
+                    }
+
+                    return true;
+                },
+                validmaskCVC: function (input) {
+                    if (input.is("[name='CVCNumber']") && input.val() != "") {
+                        var maskedtextbox = input.data("kendoMaskedTextBox");
+                        return maskedtextbox.value().indexOf(maskedtextbox.options.promptChar) === -1;
+                    }
+
+                    return true;
+                }
+            },
+            messages:{
+                validmaskNumber: "Card number is incomplete",
+                validmaskCVC:"CSV code is incomplete"
+            }
+        });
+    })(jQuery, kendo);
+
+    $(document).ready(function(){
+        $("input[name='CurrentPassword']").closest(".k-form-field").css("display", "block");
+        $("input[name='CurrentPassword']").closest(".k-textbox").width("65%");
+        $("input[name='NewPassword']").closest(".k-form-field").css("display", "block");
+        $("input[name='NewPassword']").closest(".k-textbox").width("65%");
+    })
+    function onChange(){
+        enableButtons(true);
+    }
+    function enableButtons(arg) {
+        $("#cancelButton").data("kendoButton").enable(arg);
+        $("#save").data("kendoButton").enable(arg);
+      }
+    function onTabSelect(e){
+        var tabstrip = e.sender;
+        $(tabstrip.tabGroup).find("button.k-selected").removeClass("k-selected");
+        $(e.item).find("button").addClass("k-selected");
+
+        if($(e.item).index() != 0){
+            $("#profileSwitch").hide()
+        } else 
+        {
+            $("#profileSwitch").show()
+        }
+    }
+    function onCancelClick(e) {
+        var formElements = $("#tabstrip").find(".k-widget.k-form");
+        formElements.each((idx, elm)=>$(elm).getKendoForm().clear());
+        
+        $("#publicProfile").data("kendoSwitch").check(true);
+        
+        enableButtons(false);
+    }
+    function onSaveClick(){
+        //handle forms and submit content
+        //refer to teh followind documentation article for details https://docs.telerik.com/aspnet-core/html-helpers/layout/form/razor-page
+        $("#dialog").data("kendoDialog").open();
+        enableButtons(false);
+    }
+
+    function onCardDetailSelect(e){
+        var content = $(e.target).closest(".k-card").attr("data-title");
+        $("#detailsDialog").data("kendoDialog").content(content).open();
+    }
+    
+    function toggleAllChange(e){
+        var switchValue = e.sender.check();
+        var alertsFormData = $("#alertsForm").data("kendoForm").options.formData;
+        var emailsFormData = $("#emailsForm").data("kendoForm").options.formData
+
+        for (const key of Object.keys(alertsFormData)) {
+          alertsFormData[key] = switchValue;
+        }
+
+        $("#alertsForm").data("kendoForm").setOptions({
+          formData: alertsFormData
+        });
+
+        for (const key of Object.keys(emailsFormData)) {
+          emailsFormData[key] = switchValue;
+        }
+
+        $("#emailsForm").data("kendoForm").setOptions({
+          formData: emailsFormData
+        });
+
+        enableButtons(true);
+    }
+
+    function selectCard(e) {
+        $(".selected").removeClass("selected");
+        $(e.target).closest(".k-card-type-rich").addClass("selected");
+    }
+
+</script>
 <style>
     @@media only screen and (max-width: 600px) {
         .k-tilelayout-item.k-card {
@@ -142,6 +457,9 @@
 
         .k-grid-cols-2 {
             grid-template-columns: repeat(1,minmax(0,1fr));
+        }
+        .k-form-horizontal .k-form-field>.k-form-label, .k-form-horizontal .k-form-field>.k-label, .k-form-horizontal .k-form-field>kendo-label{
+            text-align: start;
         }
     }
     #settings .k-card-header {
@@ -161,7 +479,85 @@
         font-weight: bold;
         text-align: right;
     }
+    /*FORMS*/
     #UserInformationForm > div.k-form-buttons{
         justify-content:space-between;
     }
+    .formTitle {
+        color: #8F8F8F;
+        padding: 16px 0px 8px 0px;
+        font-size: 12px;
+      }
+      .settingsForm {
+        background-color: #fafafa;
+        padding: 0px 16px 0px 16px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .k-form-horizontal .k-form-field>.k-form-label {
+        align-items: flex-start;
+        width: 85%;
+      }
+      #NewPassword-form-hint{
+          width:65%;
+      }
+      .alertSubLabel {
+        color: #8F8F8F;
+      }
+    /*TABSTRIP*/
+    .k-tabstrip-items-wrapper .k-item.k-state-active, .k-tabstrip-items-wrapper .k-item.k-state-selected, .k-tabstrip-items-wrapper .k-item:active{
+        border-color:transparent;
+    }
+    .k-tabstrip-top>.k-tabstrip-items-wrapper .k-item.k-state-active{
+        border-bottom-color: rgba(0, 0, 0, 0.08);
+    }
+    .k-tabstrip-content, .k-tabstrip>.k-content {
+        border-color:transparent;
+    }
+
+    /*CARDS*/
+    #cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .k-card-type-rich {
+        min-width: 160px;
+        flex-grow: 1;
+        padding: 8px 16px;
+        justify-content: space-between;
+    }
+
+    .plan-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 8px 8px 0px;
+    }
+
+    .plan-title {
+        font-family: Roboto;
+        font-size: 20px;
+        color: #424242;
+    }
+
+    .body-label {
+        text-align: center;
+        font-weight: 300;
+        font-size: 28px;
+    }
+
+    .plan-footer {
+        color: #8F8F8F;
+        font-weight: 400;
+        font-size: 12px;
+        border-width: 0px;
+        align-self: center;
+    }
+    .selected {
+        border: 1px solid #37B400;
+      }
+
 </style>

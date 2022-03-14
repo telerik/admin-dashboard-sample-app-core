@@ -1,50 +1,78 @@
 ﻿@{
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
-<main class="k-d-flex-row k-align-items-center k-justify-content-center">
-    <div class="sign-in-layout k-d-flex ">
-        <div class="waves"></div>
-        <div class="signin-container k-d-flex-col k-align-items-center k-justify-content-center">
+<main class="sign-in-page">
+    <div class="sign-in-layout">
+        <div class="signin-container">
             @RenderBody()
         </div>
-        <div style="width:100%" class="k-d-flex-col k-align-items-center k-justify-content-end">
-            <div class="slogan-container k-d-flex-col k-align-items-center k-justify-content-center">
-                <div class="title">How Does Telerik UI Cut Development Time?</div>
-                <div class="subtitle">Telerik UI delivers everything you need to build modern, beautiful, responsive apps.</div>
-                <div class="kendoka"></div>
+    </div>
+    <div class="slogan">
+        <div class="slogan-container">
+            <div class="kendoka">
+                <img src="./assets/signin/bgr-image.svg" />
+                <img style="position:absolute; max-width:500px; left:50%; bottom:10%;"  src="./assets/signin/kendoka.svg" />
             </div>
+            <div class="title">How Does Telerik UI Cut Development Time?</div>
+            <div class="subtitle">Telerik UI delivers everything you need to build modern, beautiful, responsive apps.</div>
         </div>
     </div>
 </main>
 
 <style>
-    .slogan-container {
-        width: 540px;
-        height: 80%;
-        position: absolute;
-        gap: 30px;
+    .sign-in-page{
+        position: relative;
+        height: 100vh;
+        display: flex;
+        background: linear-gradient(16.66deg, #070B46 45.27%, #2D2DD3 100%);
     }
-
-    .sign-in-layout {
-        width: 1440px;
-        height: 900px;
-        background:url(@Url.Content("~/assets/signin/background.svg"));
-        background-repeat: no-repeat;
+    .sign-in-layout{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        max-width: 560px;
+        min-width: 400px;
+        width: 39%;
+        z-index: 1;
+        background: #FFFFFF;
+    }
+    .sign-in-container{
+        background-color:white;
+        width:61%;
+    }
+    .slogan{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        width: 61%;
+        max-width: 542px;
+        margin: 0 auto;
+    }
+    .slogan-container{
+        margin-top:5vh;
     }
 
     .kendoka {
-        background: url( @Url.Content("~/assets/signin/kendoka.svg") );
-        width: 480px;
-        height: 480px;
-        transform: scale(-1,1);
+        position: absolute;
+        bottom: 0;
+        left:0;
+        width:100%;
+        max-height:90%;
     }
 
+    .kendoka img {
+        width: 100%; 
+        height: auto;
+    }
     .title {
         font-weight: 700;
         font-size: 48px;
         line-height: 67px;
         color: #FFFFFF;
-        text-align: center
+        text-align: center;
     }
 
     .subtitle {
@@ -55,18 +83,13 @@
         text-align: center;
     }
 
-    .signin-container {
-        background: white;
-        width: 560px;
-        z-index: 1;
-    }
-
-    .waves {
-        background:url(@Url.Content("~/assets/signin/bgr-image.svg"));
-        width: 100%;
-        height: 390px;
-        align-self: flex-end;
-        position: absolute;
-        background-repeat: no-repeat
+    @@media screen and (max-width: 767px) {
+      .slogan{
+          display:none;
+      }
+      .sign-in-layout{
+          width:100%;
+          height:100%;
+      }
     }
 </style>

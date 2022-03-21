@@ -64,7 +64,7 @@
 
     <script id="total-points-template" type="text/html">
         <div style="height:100%;width:100%;">
-            <kendo-chart name="chart" is-in-client-template="true" theme="sass">
+            <kendo-chart name="chart" is-in-client-template="true" theme="sass" style="height:90%;">
                 <chart-legend position="ChartLegendPosition.Bottom" align="ChartLegendAlign.Center">
                     <labels><chart-legend-labels-margin right="200" /></labels>
                 </chart-legend>
@@ -281,6 +281,32 @@
           ]
         });
     }
+    function updateCategoryAxisLabels() {
+    var chart = $("#chart").data("kendoChart");
+    if (chart) {
+      if ($(window).width() <= 716) {
+        chart.setOptions({
+          legend: {
+            labels: {
+              margin: {
+                right: 50
+              }
+            }
+          }
+        });
+      } else {
+        chart.setOptions({
+         legend: {
+            labels: {
+              margin: {
+                right: 200
+              }
+            }
+          }
+        });
+      }
+    }
+  }
 </script>
 <style>
     .contextMenuButton{

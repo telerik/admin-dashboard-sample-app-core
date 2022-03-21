@@ -145,6 +145,11 @@
         vertical-align: middle;
         padding-left: 3 px;
     }
+    @@media (max-width: 716px) {
+        .k-drawer-wrapper {
+            transition: none;
+        }
+    }
 </style>
 
 <script>
@@ -159,6 +164,8 @@
         if ($(window).width() < 600) {
             $("#drawer").getKendoDrawer().hide()
             $('.k-drawer-container').removeClass('k-drawer-expanded');
+            updateCategoryAxisLabels();
+            kendo.resize($(".k-chart"))
         }
 
         resizeWidgets()

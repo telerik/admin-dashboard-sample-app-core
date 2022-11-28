@@ -125,7 +125,7 @@
         color: #424242;
     }
 
-    li.k-state-selected[data-role='drawer-item'] > a {
+    li.k-selected[data-role='drawer-item'] > a {
         color: #FFFFFF;
     }
     .k-drawer-item > a {
@@ -155,7 +155,7 @@
 <script>
     $(document).ready(function () {
         //highlight selected Drawer item on page load
-        $('a[href="@routeUrl"]').parent().addClass('k-state-selected');
+        $('a[href="@routeUrl"]').parent().addClass('k-selected');
 
         //show Drawer as expanded on page load
         $('.k-drawer-container').addClass('k-drawer-expanded');

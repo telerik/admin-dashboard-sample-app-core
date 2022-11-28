@@ -297,7 +297,7 @@
 <script id="weather-template" type="text/html">
     <div class="k-d-flex-col k-align-items-center k-justify-content-around">
         <div style="width: 100px; height: 100px; background-image: url(@Url.Content("~/assets/settings/cloud.svg"))"></div>
-        <div class="k-state-disabled">Partly Cloudy</div>
+        <div class="k-disabled">Partly Cloudy</div>
         <div style="font-size: 70px; font-weight: 300; line-height: 84px; color: \\#0058E9">12 &\\#176;C</div>
     </div>
     <div class="k-card-footer">
@@ -504,10 +504,10 @@
         color: #8F8F8F;
       }
     /*TABSTRIP*/
-    .k-tabstrip-items-wrapper .k-item.k-state-active, .k-tabstrip-items-wrapper .k-item.k-state-selected, .k-tabstrip-items-wrapper .k-item:active{
+    .k-tabstrip-items-wrapper .k-item.k-active, .k-tabstrip-items-wrapper .k-item.k-selected, .k-tabstrip-items-wrapper .k-item:active{
         border-color:transparent;
     }
-    .k-tabstrip-top>.k-tabstrip-items-wrapper .k-item.k-state-active{
+    .k-tabstrip-top>.k-tabstrip-items-wrapper .k-item.k-active{
         border-bottom-color: rgba(0, 0, 0, 0.08);
     }
     .k-tabstrip-content, .k-tabstrip>.k-content {

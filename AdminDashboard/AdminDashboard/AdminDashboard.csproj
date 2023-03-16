@@ -16,7 +16,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2023.1.117" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2023.1.314" />
   </ItemGroup>
 
 </Project>

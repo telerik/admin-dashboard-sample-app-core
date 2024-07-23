@@ -157,16 +157,16 @@
     <kendo-tilelayout name="dashboard-tilelayout" columns="4" resizable="true" reorderable="true" columns-width="25%" rows-height="230px" on-resize="onTileResize">
         <containers>
             <container body-template-id="tasks-ontrack-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Tasks On Track</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
+                <container-header template="<span class=k-card-title>Tasks On Track</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-font-icon k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="overdue-tasks-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Overdue Tasks</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
+                <container-header template="<span class=k-card-title>Overdue Tasks</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-font-icon k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="issues-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Issues</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
+                <container-header template="<span class=k-card-title>Issues</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-font-icon k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="used-space-template" col-span="1" row-span="1">
-                <container-header template="<span class=k-card-title>Used Space</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-icon k-i-more-vertical'></span></a>" />
+                <container-header template="<span class=k-card-title>Used Space</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-font-icon k-icon k-i-more-vertical'></span></a>" />
             </container>
             <container body-template-id="total-points-template" col-span="4" row-span="2">
                 <container-header template-id="total-points-header-template" />
@@ -179,7 +179,7 @@
 </div>
 <kendo-contextmenu name="context-menu" on-select="onSelect" target="#dashboard-tilelayout" filter=".contextMenuButton" orientation="ContextMenuOrientation.Vertical">
     <items>
-        <menu-item text="<span class='k-icon k-i-delete'></span> Delete" encoded=false ></menu-item>
+        <menu-item text="<span class='k-font-icon k-icon k-i-delete'></span> Delete" encoded=false ></menu-item>
     </items>
 </kendo-contextmenu>
 <script>

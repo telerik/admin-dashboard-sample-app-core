@@ -12,11 +12,11 @@
             <main role="main">
                 <kendo-appbar name="appbar" theme-color="AppBarThemeColor.Inherit" style="height:48px;">
                     <items>
-                        <appbar-item type="AppBarItemType.ContentItem" template="<a id='menuIcon' href='\\#' class='k-button k-button-md k-button-rectangle k-rounded-md k-button-flat' onclick='toggleDrawer()'><span class='k-icon k-i-menu'></span></a>"></appbar-item>
+                        <appbar-item type="AppBarItemType.ContentItem" template="<a id='menuIcon' href='\\#' class='k-button k-button-md k-button-rectangle k-rounded-md k-button-flat' onclick='toggleDrawer()'><span class='k-font-icon k-icon k-i-menu'></span></a>"></appbar-item>
                         <appbar-item type="AppBarItemType.Spacer" width="16px"></appbar-item>
                         <appbar-item type="AppBarItemType.ContentItem" template="<div class='title'>@ViewData["Title"]</div>"></appbar-item>
                         <appbar-item type="AppBarItemType.Spacer"></appbar-item>
-                        <appbar-item type="AppBarItemType.ContentItem" template="<div class='app-bar-link'><span class='k-icon k-i-notification'><span data-role='badge' class='k-badge k-badge-solid k-badge-error k-badge-md k-badge-dot k-badge-outside k-top-end'></span></span></div>"></appbar-item>
+                        <appbar-item type="AppBarItemType.ContentItem" template="<div class='app-bar-link'><span class='k-font-icon k-icon k-i-notification'><span data-role='badge' class='k-badge k-badge-solid k-badge-error k-badge-md k-badge-dot k-badge-outside k-top-end'></span></span></div>"></appbar-item>
                         <appbar-item type="AppBarItemType.Spacer" width="8px"></appbar-item>
                         <appbar-item type="AppBarItemType.ContentItem" template="<a href='@Url.Page("About")' class='app-bar-link'>About</a>"></appbar-item>
                     </items>
@@ -49,11 +49,11 @@
         </form>
     </div>
     <ul>
-        <li data-role='drawer-item'><a asp-page="/Index"><span class="k-icon k-i-grid "></span>Dashboard</a></li>
-        <li data-role='drawer-item'><a asp-page="/Performance"><span class="k-icon k-i-globe"></span>Performance and Sales</a></li>
-        <li data-role='drawer-item'><a asp-page="/Products"><span class="k-icon k-i-aggregate-fields"></span>Products</a></li>
+        <li data-role='drawer-item'><a asp-page="/Index"><span class="k-font-icon k-icon k-i-grid "></span>Dashboard</a></li>
+        <li data-role='drawer-item'><a asp-page="/Performance"><span class="k-font-icon k-icon k-i-globe"></span>Performance and Sales</a></li>
+        <li data-role='drawer-item'><a asp-page="/Products"><span class="k-font-icon k-icon k-i-aggregate-fields"></span>Products</a></li>
         <li data-role='drawer-separator'></li>
-        <li data-role='drawer-item'><a asp-page="/Settings"><span class="k-icon k-i-gear"></span>Settings</a></li>
+        <li data-role='drawer-item'><a asp-page="/Settings"><span class="k-font-icon k-icon k-i-gear"></span>Settings</a></li>
     </ul>
 </script>
 

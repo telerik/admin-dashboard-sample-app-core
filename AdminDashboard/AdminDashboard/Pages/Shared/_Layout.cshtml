@@ -10,13 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
     @* Add the Kendo UI styles: *@
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/6.7.0/default/default-main.css" />
+    @{
+        var fontIconsUrl = "https://unpkg.com/@progress/kendo-font-icons/dist/index.css";
+    }
+
+    <link rel="stylesheet" href="@fontIconsUrl" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/8.0.1/default/default-main.css" />
+    <link rel="stylesheet" href="./css/site.css" />
 
     @* Add the Kendo UI scripts: *@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/kendo.all.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/kendo.aspnetmvc.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2024.2.514/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2024.2.514/js/kendo.aspnetmvc.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2024.2.514/js/jszip.min.js"></script>
 </head>
 <body>
     @RenderBody()

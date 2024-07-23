@@ -11,3 +11,6 @@ html {
     height: 100%;
 }
 
+.k-drawer-item .k-icon {
+    margin: 0 8px;
+}

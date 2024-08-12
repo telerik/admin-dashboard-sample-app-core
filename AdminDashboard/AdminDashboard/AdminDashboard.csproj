@@ -17,7 +17,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
-    <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2024.2.514" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2024.3.806" />
   </ItemGroup>
 
 </Project>

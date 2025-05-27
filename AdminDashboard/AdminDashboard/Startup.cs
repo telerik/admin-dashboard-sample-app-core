@@ -64,6 +64,7 @@ namespace AdminDashboard
             }
 
             app.UseHttpsRedirection();
+            app.UsePathBase("/aspnet-core/admin-dashboard/");
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -21,7 +21,6 @@ namespace AdminDashboard
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
 
-            CreateDbIfNotExists(host);
             host.Run();
         }
 
@@ -31,27 +30,5 @@ namespace AdminDashboard
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-        private static async void CreateDbIfNotExists(IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                try
-                {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    var environment = services.GetRequiredService<IWebHostEnvironment>();
-                    UserManager<ApplicationUser> userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    context.Database.Migrate();
-                    await DbInitializer.Initialize(context, environment, userManager);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred creating the DB.");
-                }
-            }
-        }
     }
 }

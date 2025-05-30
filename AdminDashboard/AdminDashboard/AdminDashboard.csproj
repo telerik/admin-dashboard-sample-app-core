@@ -22,4 +22,10 @@
     <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2025.1.227" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="AdminDashboard.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

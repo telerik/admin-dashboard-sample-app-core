@@ -42,6 +42,19 @@ namespace AdminDashboard
             {
                 // Cookie settings
                 options.LoginPath = "/Login";
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    if (context.Request.Headers.ContainsKey("X-Forwarded-Host"))
+                    {
+                        var forwardedHost = context.Request.Headers["X-Forwarded-Host"].ToString();
+                        var pathBase = context.Request.PathBase;
+                        context.Response.Redirect($"https://{forwardedHost}{pathBase}/Login");
+                        return Task.CompletedTask;
+                    }
+
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
             });
             services.AddRazorPages().AddJsonOptions(options =>
                 options.JsonSerializerOptions.PropertyNamingPolicy = null);

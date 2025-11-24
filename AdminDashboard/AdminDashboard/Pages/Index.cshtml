@@ -155,6 +155,7 @@
     </script>
 
     <kendo-tilelayout name="dashboard-tilelayout" columns="4" resizable="true" reorderable="true" columns-width="25%" rows-height="230px" on-resize="onTileResize">
+        <reorderable click-move-click="false" />
         <containers>
             <container body-template-id="tasks-ontrack-template" col-span="1" row-span="1">
                 <container-header template="<span class=k-card-title>Tasks On Track</span><a class='contextMenuButton'><span style='float:right; color:\\#656565;' class='k-font-icon k-icon k-i-more-vertical'></span></a>" />

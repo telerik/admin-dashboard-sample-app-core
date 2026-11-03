@@ -15,10 +15,12 @@
     <kendo-form name="Login"
                 form-data="Model.Input"
                 layout="grid"
-                buttons-template="<button class='k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-primary' style='width:100%'>Sign In</button>"
                 method="post"
                 style="width:100%">
         <validatable validate-on-blur="true" validation-summary="false" />
+        <buttons-template>
+            <kendo-button size="ButtonSize.Medium" rounded="Rounded.Medium" fill-mode="ButtonFillMode.Solid" theme-color="ThemeColor.Primary" name="signIn" style='width:100%' type="submit">Sign In</kendo-button>
+        </buttons-template>
         <grid cols="1" gutter="5" />
         <form-items>
             <form-item field="Email">
